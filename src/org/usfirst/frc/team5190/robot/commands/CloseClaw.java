@@ -14,12 +14,13 @@ import org.usfirst.frc.team5190.robot.Robot;
  */
 public class CloseClaw extends Command {
 	public CloseClaw() {
+		super("CloseClaw");
 		requires(Robot.claw);
 	}
 
-	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		System.out.println("Entering command - CloseClaw");
 		Robot.claw.close();
 	}
 
@@ -38,5 +39,6 @@ public class CloseClaw extends Command {
 		// can.
 		if (!Robot.isSimulation())
 			Robot.claw.stop();
+		System.out.println("Leaving command - CloseClaw");
 	}
 }

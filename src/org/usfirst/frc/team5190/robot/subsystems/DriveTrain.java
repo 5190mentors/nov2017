@@ -25,11 +25,11 @@ public class DriveTrain extends Subsystem {
 	private static final int FRONT_RIGHT = 1;
 	private static final int REAR_RIGHT = 3;
 	
+	private static final double GYRO_ANGLE_TOLERANCE = 5;
 	private static final double GYRO_CORRECTION_CONSTANT = 1;
 	private static final double GYRO_RESPONSE_DELAY = 0.004;
 	private static final double BALANCING_MIN_TIME_CHECK = 1;
 	private static final double BALANCING_MAX_TIME_CHECK = 20;
-	private static final double BALANCING_TOLERANCE_LIMIT = 5;
 	
 	private SpeedController frontLeftMotor = new Jaguar(FRONT_LEFT);
 	private SpeedController rearLeftMotor = new Jaguar(REAR_LEFT);
@@ -82,7 +82,6 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void log() {
-		SmartDashboard.putString("Drive Train", "Hello");
 //		SmartDashboard.putNumber("Left Distance", leftEncoder.getDistance());
 //		SmartDashboard.putNumber("Right Distance", rightEncoder.getDistance());
 //		SmartDashboard.putNumber("Left Speed", leftEncoder.getRate());
@@ -104,6 +103,7 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void reset() {
+        System.out.println("DriveTrain: Reset");
 //		gyro.reset();
 		balancingTimer.reset();
 //		leftEncoder.reset();
@@ -122,16 +122,17 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void autoBalanceOnTeeterTotter() {
-//		double pitchAngleDegrees = getHeading();
-//        double pitchAngleRadians = pitchAngleDegrees * (Math.PI / 180.0);
-//        double yAxisRate = Math.sin(pitchAngleRadians) * GYRO_CORRECTION_CONSTANT;
-//        drive(yAxisRate, 0);
-//        Timer.delay(GYRO_RESPONSE_DELAY);		// wait for a motor update time    
+		double pitchAngleDegrees = getHeading();
+        double pitchAngleRadians = pitchAngleDegrees * (Math.PI / 180.0);
+        double yAxisRate = Math.sin(pitchAngleRadians) * GYRO_CORRECTION_CONSTANT;
+        System.out.println("DriveTrain: Autobalancing - " + pitchAngleDegrees + ", " + yAxisRate);
+        drive(yAxisRate, 0);
+        Timer.delay(GYRO_RESPONSE_DELAY);		// wait for a motor update time    
     }
 	
 	public boolean isBalanced() {
 		double elapsed = balancingTimer.get();
 		return elapsed > BALANCING_MAX_TIME_CHECK || 
-				(elapsed > BALANCING_MIN_TIME_CHECK && getHeading() < BALANCING_TOLERANCE_LIMIT);
+				(elapsed > BALANCING_MIN_TIME_CHECK && getHeading() < GYRO_ANGLE_TOLERANCE);
 	}
 }

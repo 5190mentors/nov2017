@@ -14,19 +14,19 @@ import org.usfirst.frc.team5190.robot.Robot;
  */
 public class OpenClaw extends TimedCommand {
 	public OpenClaw() {
-		super(1);
+		super("OpenClaw", 1);
 		requires(Robot.claw);
 	}
 
-	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		System.out.println("Entering command - OpenClaw");
 		Robot.claw.open();
 	}
 
-	// Called once after isFinished returns true
 	@Override
 	protected void end() {
 		Robot.claw.stop();
+		System.out.println("Cancelling command - OpenClaw");
 	}
 }

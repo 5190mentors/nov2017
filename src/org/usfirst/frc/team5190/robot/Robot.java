@@ -42,7 +42,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		// instantiate the command used for the autonomous period
-		autonomousCommand = new Autonomous();
+		// autonomousCommand = new Autonomous();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivetrain);
@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		autonomousCommand.start(); // schedule the autonomous command (example)
+		// autonomousCommand.start(); // schedule the autonomous command (example)
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		autonomousCommand.cancel();
+		// autonomousCommand.cancel();
 	}
 
 	/**

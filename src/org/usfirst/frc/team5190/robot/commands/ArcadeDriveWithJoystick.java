@@ -1,22 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.usfirst.frc.team5190.robot.commands;
 
 import org.usfirst.frc.team5190.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- * Have the robot drive tank style using the PS3 Joystick until interrupted.
- */
 public class ArcadeDriveWithJoystick extends Command {
 
 	public ArcadeDriveWithJoystick() {
+		super("ArcadeDriveWithJoyStick");
 		requires(Robot.drivetrain);
 	}
 
+	// Called once before execution
+	@Override
+	protected void initialize() {
+		System.out.println("Entering command - ArcadeDriveWithJoyStick");
+	}
+	
+	
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
@@ -33,5 +34,13 @@ public class ArcadeDriveWithJoystick extends Command {
 	@Override
 	protected void end() {
 		Robot.drivetrain.drive(0, 0);
+		System.out.println("Leaving command - ArcadeDriveWithJoyStick");
+	}
+	
+	// Called once when this command is cancelled
+	@Override
+	protected void interrupted() {
+		Robot.drivetrain.drive(0, 0);
+		System.out.println("Cancelling command - ArcadeDriveWithJoyStick");
 	}
 }
