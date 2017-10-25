@@ -34,8 +34,8 @@ public class OI {
 //		JoystickButton d_left = new JoystickButton(joy, 8);
 //		JoystickButton l2 = new JoystickButton(joy, 9);
 		JoystickButton r2 = new JoystickButton(joy, 10);
-//		JoystickButton l1 = new JoystickButton(joy, 11);
-		JoystickButton r1 = new JoystickButton(joy, 12);
+		JoystickButton l1 = new JoystickButton(joy, 11);
+//		JoystickButton r1 = new JoystickButton(joy, 12);
 
 		// Connect the buttons to commands
 //		d_up.whenPressed(new SetElevatorSetpoint(0.2));
@@ -48,8 +48,8 @@ public class OI {
 //		l1.whenPressed(new Place());
 //		l2.whenPressed(new Autonomous());
 		
-		r1.whenPressed(new StartBalance());
-		r2.whenPressed(new StopBalance());
+		r2.whenPressed(new StartBalance());
+		l1.whenPressed(new StopBalance());
 	}
 
 	public Joystick getJoystick() {

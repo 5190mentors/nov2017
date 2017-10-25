@@ -1,9 +1,7 @@
 package org.usfirst.frc.team5190.robot.subsystems;
 
-import org.usfirst.frc.team5190.robot.Robot;
 import org.usfirst.frc.team5190.robot.commands.ArcadeDriveWithJoystick;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -11,7 +9,6 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The DriveTrain subsystem incorporates the sensors and actuators attached to
@@ -25,11 +22,11 @@ public class DriveTrain extends Subsystem {
 	private static final int FRONT_RIGHT = 1;
 	private static final int REAR_RIGHT = 3;
 	
-	private static final double GYRO_ANGLE_TOLERANCE = 5;
+	private static final double GYRO_ANGLE_TOLERANCE = 2;
 	private static final double GYRO_CORRECTION_CONSTANT = 1;
 	private static final double GYRO_RESPONSE_DELAY = 0.004;
 	private static final double BALANCING_MIN_TIME_CHECK = 1;
-	private static final double BALANCING_MAX_TIME_CHECK = 20;
+	private static final double BALANCING_MAX_TIME_CHECK = 10;
 	
 	private SpeedController frontLeftMotor = new Jaguar(FRONT_LEFT);
 	private SpeedController rearLeftMotor = new Jaguar(REAR_LEFT);
@@ -99,7 +96,7 @@ public class DriveTrain extends Subsystem {
 
 	public double getHeading() {
 //		return gyro.getAngle();
-		return 0;
+		return 10 - 2 * balancingTimer.get();
 	}
 
 	public void reset() {
@@ -123,7 +120,7 @@ public class DriveTrain extends Subsystem {
 	
 	public void autoBalanceOnTeeterTotter() {
 		double pitchAngleDegrees = getHeading();
-        double pitchAngleRadians = pitchAngleDegrees * (Math.PI / 180.0);
+        double pitchAngleRadians = 2 * pitchAngleDegrees * (Math.PI / 180.0);
         double yAxisRate = Math.sin(pitchAngleRadians) * GYRO_CORRECTION_CONSTANT;
         System.out.println("DriveTrain: Autobalancing - " + pitchAngleDegrees + ", " + yAxisRate);
         drive(yAxisRate, 0);
