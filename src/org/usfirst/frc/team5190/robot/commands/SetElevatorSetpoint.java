@@ -8,30 +8,37 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team5190.robot.Robot;
 
-/**
- * Move the elevator to a given location. This command finishes when it is
- * within the tolerance, but leaves the PID loop running to maintain the
- * position. Other commands using the elevator should make sure they disable
- * PID!
- */
 public class SetElevatorSetpoint extends Command {
 	private double setpoint;
 
 	public SetElevatorSetpoint(double setpoint) {
-		this.setpoint = setpoint;
+		super("Elevator");
 		requires(Robot.elevator);
+		this.setpoint = setpoint;
 	}
 
-	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.elevator.enable();
-		Robot.elevator.setSetpoint(setpoint);
+		System.out.println("Entering command - SetElevatorSetpoint");
+		Robot.endPIDloops();
+		Robot.elevator.initialize(setpoint);
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected void execute() {
+		// Nothing to execute. PID on straight drive takes care of execution
+	}
+
 	@Override
 	protected boolean isFinished() {
 		return Robot.elevator.onTarget();
 	}
+	
+	@Override
+	protected void end() {
+		// we won't disable the PID loop of balance drive so that it maintains its balance
+		// next in line should do this.
+		// Robot.elevator.end();
+		System.out.println("Leaving command - SetElevatorSetpoint");
+	}	
 }

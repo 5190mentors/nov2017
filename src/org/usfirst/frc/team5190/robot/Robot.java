@@ -1,12 +1,21 @@
 package org.usfirst.frc.team5190.robot;
 
-import org.usfirst.frc.team5190.robot.commands.Autonomous;
+import org.usfirst.frc.team5190.robot.subsystems.BalanceDrive;
 import org.usfirst.frc.team5190.robot.subsystems.Claw;
 import org.usfirst.frc.team5190.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5190.robot.subsystems.Elevator;
-import org.usfirst.frc.team5190.robot.subsystems.Wrist;
+import org.usfirst.frc.team5190.robot.subsystems.StraightDrive;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -23,8 +32,10 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 
 	public static DriveTrain drivetrain;
+	public static StraightDrive straightDrive;
+	public static BalanceDrive balanceDrive;
+	
 	public static Elevator elevator;
-	public static Wrist wrist;
 	public static Claw claw;
 	public static OI oi;
 
@@ -34,11 +45,30 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		// Initialize all subsystems
+		// Initialize drive train
+		RobotMap.frontLeftMotor = new Jaguar(RobotMap.spFrontLeft);
+		RobotMap.rearLeftMotor = new Jaguar(RobotMap.spRearLeft);
+		RobotMap.frontRightMotor = new Jaguar(RobotMap.spFrontRight);
+		RobotMap.rearRightMotor = new Jaguar(RobotMap.spRearRight);
+
+		RobotMap.leftEncoder = new Encoder(RobotMap.dtLeftEncPortA, RobotMap.dtLeftEncPortB);
+		RobotMap.rightEncoder = new Encoder(RobotMap.dtRightEncPortA, RobotMap.dtRightEncPortA);
+		RobotMap.leftEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
+		RobotMap.rightEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
+
+		RobotMap.navx = new AHRS(SPI.Port.kMXP, RobotMap.kNavUpdateHz);
+		RobotMap.drive = new RobotDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor, RobotMap.rearRightMotor);
+
+		RobotMap.grip = new Solenoid(RobotMap.spGrip);
+		RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
+		RobotMap.elevatorSensor = new AnalogPotentiometer(RobotMap.spElevatorPot, 1.0 / 5.0);
+		
 		drivetrain = new DriveTrain();
+		straightDrive = new StraightDrive();
+		balanceDrive = new BalanceDrive();
 		elevator = new Elevator();
-		wrist = new Wrist();
 		claw = new Claw();
+		
 		oi = new OI();
 
 		// instantiate the command used for the autonomous period
@@ -47,7 +77,6 @@ public class Robot extends IterativeRobot {
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivetrain);
 		SmartDashboard.putData(elevator);
-		SmartDashboard.putData(wrist);
 		SmartDashboard.putData(claw);
 	}
 
@@ -62,7 +91,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		log();
 	}
 
 	@Override
@@ -80,7 +108,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		log();
 	}
 
 	/**
@@ -91,13 +118,14 @@ public class Robot extends IterativeRobot {
 		LiveWindow.run();
 	}
 
-	/**
-	 * The log method puts interesting information to the SmartDashboard.
-	 */
-	private void log() {
-		wrist.log();
-		elevator.log();
-		drivetrain.log();
-		claw.log();
+	public static void endPIDloops() {
+		if (straightDrive.getPIDController().isEnabled())
+			straightDrive.end();
+		
+		if (balanceDrive.getPIDController().isEnabled())
+			balanceDrive.end();
+		
+		if (elevator.getPIDController().isEnabled())
+			elevator.end();
 	}
 }

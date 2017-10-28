@@ -1,7 +1,10 @@
 package org.usfirst.frc.team5190.robot;
 
-import org.usfirst.frc.team5190.robot.commands.StartBalance;
-import org.usfirst.frc.team5190.robot.commands.StopBalance;
+import org.usfirst.frc.team5190.robot.commands.AutoTeeterTotter;
+import org.usfirst.frc.team5190.robot.commands.Pickup;
+import org.usfirst.frc.team5190.robot.commands.Place;
+import org.usfirst.frc.team5190.robot.commands.PrepareToPickup;
+import org.usfirst.frc.team5190.robot.commands.StopTeeterTotter;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -12,44 +15,29 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	private Joystick joy = new Joystick(0);
-
+	
 	public OI() {
-		// Put Some buttons on the SmartDashboard
-//		SmartDashboard.putData("Elevator Bottom", new SetElevatorSetpoint(0));
-//		SmartDashboard.putData("Elevator Platform", new SetElevatorSetpoint(0.2));
-//		SmartDashboard.putData("Elevator Top", new SetElevatorSetpoint(0.3));
-//
-//		SmartDashboard.putData("Wrist Horizontal", new SetWristSetpoint(0));
-//		SmartDashboard.putData("Raise Wrist", new SetWristSetpoint(-45));
-//
-//		SmartDashboard.putData("Open Claw", new OpenClaw());
-//		SmartDashboard.putData("Close Claw", new CloseClaw());
-//
-//		SmartDashboard.putData("Deliver Soda", new Autonomous());
-
 		// Create some buttons
-//		JoystickButton d_up = new JoystickButton(joy, 5);
-//		JoystickButton d_right = new JoystickButton(joy, 6);
-//		JoystickButton d_down = new JoystickButton(joy, 7);
-//		JoystickButton d_left = new JoystickButton(joy, 8);
-//		JoystickButton l2 = new JoystickButton(joy, 9);
-		JoystickButton r2 = new JoystickButton(joy, 10);
-		JoystickButton l1 = new JoystickButton(joy, 11);
-//		JoystickButton r1 = new JoystickButton(joy, 12);
+		JoystickButton b0 = new JoystickButton(joy, 5);
+//		JoystickButton b1 = new JoystickButton(joy, 6);
+		JoystickButton b2 = new JoystickButton(joy, 7);
+//		JoystickButton b3 = new JoystickButton(joy, 8);
+		JoystickButton b4 = new JoystickButton(joy, 5);
+		JoystickButton b5 = new JoystickButton(joy, 6);
+		JoystickButton b6 = new JoystickButton(joy, 7);
+//		JoystickButton b7 = new JoystickButton(joy, 8);
+//		JoystickButton b8 = new JoystickButton(joy, 9);
+//		JoystickButton b9 = new JoystickButton(joy, 10);
+//		JoystickButton b10 = new JoystickButton(joy, 11);
+//		JoystickButton b11 = new JoystickButton(joy, 12);
 
 		// Connect the buttons to commands
-//		d_up.whenPressed(new SetElevatorSetpoint(0.2));
-//		d_down.whenPressed(new SetElevatorSetpoint(-0.2));
-//		d_right.whenPressed(new CloseClaw());
-//		d_left.whenPressed(new OpenClaw());
-//
-//		r1.whenPressed(new PrepareToPickup());
-//		r2.whenPressed(new Pickup());
-//		l1.whenPressed(new Place());
-//		l2.whenPressed(new Autonomous());
+		b0.whenPressed(new PrepareToPickup());
+		b2.whenPressed(new Pickup());
+		b4.whenPressed(new Place());
 		
-		r2.whenPressed(new StartBalance());
-		l1.whenPressed(new StopBalance());
+		b5.whenPressed(new AutoTeeterTotter());
+		b6.whenPressed(new StopTeeterTotter());		
 	}
 
 	public Joystick getJoystick() {

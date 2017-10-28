@@ -4,59 +4,42 @@
  */
 package org.usfirst.frc.team5190.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team5190.robot.RobotMap;
+import org.usfirst.frc.team5190.robot.commands.OpenClaw;
 
-/**
- * The claw subsystem is a simple system with a motor for opening and closing.
- * If using stronger motors, you should probably use a sensor so that the motors
- * don't stall.
- */
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
 public class Claw extends Subsystem {
-//	private SpeedController motor = new Victor(7);
-//	private DigitalInput contact = new DigitalInput(5);
 
 	public Claw() {
-		super();
-
-		// Let's show everything on the LiveWindow
-//		LiveWindow.addActuator("Claw", "Motor", (Victor) motor);
-//		LiveWindow.addActuator("Claw", "Limit Switch", contact);
+		super("Claw");
+		
+		LiveWindow.addActuator("Claw", "Solenoid", (Solenoid) RobotMap.grip);
 	}
 
-	@Override
+	public void initialize()
+	{
+	}
+
+	public void end()
+	{
+	}
+	
 	public void initDefaultCommand() {
+		setDefaultCommand(new OpenClaw());
 	}
 
-	public void log() {
-	}
-
-	/**
-	 * Set the claw motor to move in the open direction.
-	 */
 	public void open() {
-//		motor.set(-1);
+		RobotMap.grip.set(false);
 	}
-
-	/**
-	 * Set the claw motor to move in the close direction.
-	 */
+	
 	public void close() {
-//		motor.set(1);
+		RobotMap.grip.set(true);
 	}
 
-	/**
-	 * Stops the claw motor from moving.
-	 */
-	public void stop() {
-//		motor.set(0);
-	}
-
-	/**
-	 * Return true when the robot is grabbing an object hard enough to trigger
-	 * the limit switch.
-	 */
 	public boolean isGrabbing() {
-//		return contact.get();
-		return false;
+		return RobotMap.grip.get();
 	}
 }

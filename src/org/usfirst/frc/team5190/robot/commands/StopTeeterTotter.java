@@ -8,16 +8,18 @@ import org.usfirst.frc.team5190.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class StopBalance extends Command {
+public class StopTeeterTotter extends Command {
 
-	public StopBalance() {
-		super("StopBalance");
-		requires(Robot.drivetrain);
+	public StopTeeterTotter() {
+		super("StopTeeterTotter");
+		requires(Robot.straightDrive);
+		requires(Robot.balanceDrive);
 	}
 
 	@Override
 	protected void initialize() {
-		System.out.println("Entering command - StopBalance");
+		System.out.println("Entering command - StopTeeterTotter");
+		Robot.endPIDloops();
 	}
 	
 	@Override
@@ -27,6 +29,6 @@ public class StopBalance extends Command {
 
 	@Override
 	protected void end() {
-		System.out.println("Leaving command - StopBalance");
+		System.out.println("Leaving command - StopTeeterTotter");
 	}
 }
