@@ -5,9 +5,12 @@ import org.usfirst.frc.team5190.robot.commands.AutoDriveBalance;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BalanceDrive extends PIDSubsystem {
 
+	protected double m_pidOut;
+	
     public BalanceDrive() {
     	super("Balance Drive", RobotMap.kPbd, RobotMap.kIbd, RobotMap.kDbd, RobotMap.kFbd);
 
@@ -48,6 +51,13 @@ public class BalanceDrive extends PIDSubsystem {
     @Override
     protected void usePIDOutput(double output) 
     {
+    	m_pidOut = output;
     	RobotMap.drive.arcadeDrive(output, 0);
+    }
+
+    public void updateSmartDashboard() {
+    	SmartDashboard.putNumber("BalanceDrive.DistanceDriveSetpoint", this.getSetpoint());
+    	SmartDashboard.putNumber("BalanceDrive.PIDInput", this.returnPIDInput());
+    	SmartDashboard.putNumber("BalanceDrive.PIDOutput", m_pidOut);
     }
 }

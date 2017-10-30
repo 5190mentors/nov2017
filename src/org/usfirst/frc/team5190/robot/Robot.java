@@ -59,9 +59,16 @@ public class Robot extends IterativeRobot {
 		RobotMap.navx = new AHRS(SPI.Port.kMXP, RobotMap.kNavUpdateHz);
 		RobotMap.drive = new RobotDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor, RobotMap.rearRightMotor);
 
-		RobotMap.grip = new Solenoid(RobotMap.spGrip);
-		RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
-		RobotMap.elevatorSensor = new AnalogPotentiometer(RobotMap.spElevatorPot, 1.0 / 5.0);
+		if (RobotMap.enableClaw)
+		{
+			RobotMap.grip = new Solenoid(RobotMap.spGrip);
+		}
+		
+		if (RobotMap.enableElevator)
+		{
+			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
+			RobotMap.elevatorSensor = new AnalogPotentiometer(RobotMap.spElevatorPot, 1.0 / 5.0);
+		}
 		
 		drivetrain = new DriveTrain();
 		straightDrive = new StraightDrive();
@@ -76,12 +83,15 @@ public class Robot extends IterativeRobot {
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivetrain);
+		SmartDashboard.putData(straightDrive);
+		SmartDashboard.putData(balanceDrive);
 		SmartDashboard.putData(elevator);
-		SmartDashboard.putData(claw);
+		SmartDashboard.putData(claw);		
 	}
 
 	@Override
 	public void autonomousInit() {
+		endPIDloops();
 		// autonomousCommand.start(); // schedule the autonomous command (example)
 	}
 
@@ -100,6 +110,7 @@ public class Robot extends IterativeRobot {
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		// autonomousCommand.cancel();
+		endPIDloops();
 	}
 
 	/**
@@ -108,14 +119,28 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		updateSmartDashboard();
 	}
 
+	@Override
+	public void testInit() {
+		endPIDloops();
+	}
+	
 	/**
 	 * This function is called periodically during test mode
 	 */
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+	}
+	
+	public void updateSmartDashboard() {
+		drivetrain.updateSmartDashboard();
+		straightDrive.updateSmartDashboard();
+		balanceDrive.updateSmartDashboard();
+		elevator.updateSmartDashboard();
+		claw.updateSmartDashboard();
 	}
 
 	public static void endPIDloops() {

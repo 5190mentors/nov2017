@@ -33,28 +33,30 @@ public class RobotMap {
 	public static Encoder rightEncoder;
 
 	// STRAIGHT DRIVE
-	public static final double kPsd = 0.1;
+	public static final double kPsd = 1; //0.1;
 	public static final double kIsd = 0;
-	public static final double kDsd = 0.3;
-	public static final double kFsd = 0.001;
+	public static final double kDsd = 0; //0.3;
+	public static final double kFsd = 0; //0.001;
 	public static final double kMaxPitch = 10;
 	
 	// BALANCE DRIVE
-	public static final double kPbd = 0.1;
+	public static final double kPbd = 1; //0.1;
 	public static final double kIbd = 0;
-	public static final double kDbd = 0.3;
-	public static final double kFbd = 0.001;
+	public static final double kDbd = 0; //0.3;
+	public static final double kFbd = 0; //0.001;
 
 	// CLAW
+	public static final boolean enableClaw = false;
 	public static final int spGrip = 0;
 	public static Solenoid grip; 
 	
 	// ELEVATOR
+	public static final boolean enableElevator = false;
 	public static final int spElevatorMotor = 4;
 	public static final int spElevatorPot = 4;
-	public static final double kPel = 18;
-	public static final double kIel= 0.07;
-	public static final double kDel = 0.2;
+	public static final double kPel = 1; // 18;
+	public static final double kIel = 0; //0.07;
+	public static final double kDel = 0; //0.2;
 	public static SpeedController elevatorMotor;
 	public static Potentiometer elevatorSensor;
 

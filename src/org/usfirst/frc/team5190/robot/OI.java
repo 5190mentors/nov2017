@@ -8,6 +8,7 @@ import org.usfirst.frc.team5190.robot.commands.StopTeeterTotter;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -34,10 +35,9 @@ public class OI {
 		// Connect the buttons to commands
 		b0.whenPressed(new PrepareToPickup());
 		b2.whenPressed(new Pickup());
-		b4.whenPressed(new Place());
-		
+		b4.whenPressed(new Place());		
 		b5.whenPressed(new AutoTeeterTotter());
-		b6.whenPressed(new StopTeeterTotter());		
+		b6.whenPressed(new StopTeeterTotter());
 	}
 
 	public Joystick getJoystick() {

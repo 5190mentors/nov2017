@@ -5,9 +5,12 @@ import org.usfirst.frc.team5190.robot.commands.AutoDriveStraight;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StraightDrive extends PIDSubsystem {
 
+	protected double m_pidOut;
+	
     public StraightDrive() {
     	super("Straight Drive", RobotMap.kPsd, RobotMap.kIsd, RobotMap.kDsd, RobotMap.kFsd);
     	
@@ -51,6 +54,13 @@ public class StraightDrive extends PIDSubsystem {
 
     @Override
     protected void usePIDOutput(double output) {
+    	m_pidOut = output;
     	RobotMap.drive.arcadeDrive(output, 0);
+    }
+
+    public void updateSmartDashboard() {
+    	SmartDashboard.putNumber("StraightDrive.DistanceDriveSetpoint", this.getSetpoint());
+    	SmartDashboard.putNumber("StraightDrive.PIDInput", this.returnPIDInput());
+    	SmartDashboard.putNumber("StraightDrive.PIDOutput", m_pidOut);
     }
 }
