@@ -20,7 +20,8 @@ public class RobotMap {
 	public static SpeedController frontRightMotor;
 	public static SpeedController rearRightMotor;
 	public static RobotDrive drive;
-	
+
+	public static final boolean enableNavX = false;
 	public static final byte kNavUpdateHz = 20;
 	public static AHRS navx;
 	

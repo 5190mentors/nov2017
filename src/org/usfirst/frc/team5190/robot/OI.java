@@ -19,10 +19,10 @@ public class OI {
 	
 	public OI() {
 		// Create some buttons
-		JoystickButton b0 = new JoystickButton(joy, 5);
-//		JoystickButton b1 = new JoystickButton(joy, 6);
-		JoystickButton b2 = new JoystickButton(joy, 7);
-//		JoystickButton b3 = new JoystickButton(joy, 8);
+//		JoystickButton b0 = new JoystickButton(joy, 1);
+//		JoystickButton b1 = new JoystickButton(joy, 2);
+		JoystickButton b2 = new JoystickButton(joy, 3);
+		JoystickButton b3 = new JoystickButton(joy, 4);
 		JoystickButton b4 = new JoystickButton(joy, 5);
 		JoystickButton b5 = new JoystickButton(joy, 6);
 		JoystickButton b6 = new JoystickButton(joy, 7);
@@ -33,8 +33,8 @@ public class OI {
 //		JoystickButton b11 = new JoystickButton(joy, 12);
 
 		// Connect the buttons to commands
-		b0.whenPressed(new PrepareToPickup());
-		b2.whenPressed(new Pickup());
+		b2.whenPressed(new PrepareToPickup());
+		b3.whenPressed(new Pickup());
 		b4.whenPressed(new Place());		
 		b5.whenPressed(new AutoTeeterTotter());
 		b6.whenPressed(new StopTeeterTotter());

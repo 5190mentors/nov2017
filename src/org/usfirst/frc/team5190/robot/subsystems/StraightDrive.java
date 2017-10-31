@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class StraightDrive extends PIDSubsystem {
 
 	protected double m_pidOut;
+	protected double m_setPoint;
 	
     public StraightDrive() {
     	super("Straight Drive", RobotMap.kPsd, RobotMap.kIsd, RobotMap.kDsd, RobotMap.kFsd);
@@ -19,12 +20,15 @@ public class StraightDrive extends PIDSubsystem {
     
     public void initialize()
     {
-    	RobotMap.navx.reset();
+    	if (RobotMap.enableNavX)
+    		RobotMap.navx.reset();
     	getPIDController().setContinuous(false);
     	getPIDController().setSetpoint(5);
     	setPercentTolerance(10);
     	setInputRange(0, RobotMap.kMaxPitch);
     	setOutputRange(-1, 1);
+    	
+    	m_setPoint = 5;
     	
     	// start the PID loop
     	enable();
@@ -39,11 +43,13 @@ public class StraightDrive extends PIDSubsystem {
     @Override
     public void initDefaultCommand() 
     {
-		setDefaultCommand(new AutoDriveStraight());
     }
 
     @Override
     protected double returnPIDInput() {
+    	if (!RobotMap.enableNavX)
+    		return m_setPoint;
+    	
         double pitch = RobotMap.navx.getPitch();
         
         if (pitch < 0)

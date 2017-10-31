@@ -56,13 +56,13 @@ public class Robot extends IterativeRobot {
 		RobotMap.leftEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
 		RobotMap.rightEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
 
-		RobotMap.navx = new AHRS(SPI.Port.kMXP, RobotMap.kNavUpdateHz);
 		RobotMap.drive = new RobotDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor, RobotMap.rearRightMotor);
 
+		if (RobotMap.enableNavX)
+			RobotMap.navx = new AHRS(SPI.Port.kMXP, RobotMap.kNavUpdateHz);
+
 		if (RobotMap.enableClaw)
-		{
 			RobotMap.grip = new Solenoid(RobotMap.spGrip);
-		}
 		
 		if (RobotMap.enableElevator)
 		{

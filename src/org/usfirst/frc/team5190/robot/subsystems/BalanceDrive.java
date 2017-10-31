@@ -39,13 +39,15 @@ public class BalanceDrive extends PIDSubsystem {
     @Override
     public void initDefaultCommand() 
     {
-		setDefaultCommand(new AutoDriveBalance());
     }
 
     @Override
     protected double returnPIDInput() 
     {
-    	return  RobotMap.navx.getPitch();
+    	if (RobotMap.enableNavX)
+    		return  RobotMap.navx.getPitch();
+    	else
+    		return 0;
     }
 
     @Override
