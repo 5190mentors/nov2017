@@ -21,10 +21,11 @@ public class RobotMap {
 	public static SpeedController rearRightMotor;
 	public static RobotDrive drive;
 
-	public static final boolean enableNavX = false;
+	public static final boolean enableNavX = true;
 	public static final byte kNavUpdateHz = 20;
 	public static AHRS navx;
-	
+
+	public static final boolean enableEncoders = false;
 	public static final int dtLeftEncPortA = 0;
 	public static final int dtLeftEncPortB = 1;
 	public static final int dtRightEncPortA = 2;
@@ -34,17 +35,18 @@ public class RobotMap {
 	public static Encoder rightEncoder;
 
 	// STRAIGHT DRIVE
-	public static final double kPsd = 1; //0.1;
+	public static final double kPsd = 0.07; //0.1;
 	public static final double kIsd = 0;
 	public static final double kDsd = 0; //0.3;
 	public static final double kFsd = 0; //0.001;
-	public static final double kMaxPitch = 10;
+	public static final double kMaxPitch = 9;
+	public static final double kMaxSpeed = 0.15;
 	
 	// BALANCE DRIVE
-	public static final double kPbd = 1; //0.1;
+	public static final double kPbd = kMaxSpeed / kMaxPitch;
 	public static final double kIbd = 0;
-	public static final double kDbd = 0; //0.3;
-	public static final double kFbd = 0; //0.001;
+	public static final double kDbd = 0;
+	public static final double kFbd = 0;
 
 	// CLAW
 	public static final boolean enableClaw = false;

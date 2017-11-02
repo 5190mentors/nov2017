@@ -6,11 +6,11 @@ package org.usfirst.frc.team5190.robot.commands;
 
 import org.usfirst.frc.team5190.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
-public class CloseClaw extends Command {
+public class CloseClaw extends TimedCommand {
 	public CloseClaw() {
-		super("CloseClaw");
+		super("CloseClaw", 1);
 		requires(Robot.claw);
 	}
 
@@ -19,11 +19,6 @@ public class CloseClaw extends Command {
 		System.out.println("Entering command - CloseClaw");
 		Robot.endPIDloops();
 		Robot.claw.close();
-	}
-
-	@Override
-	protected boolean isFinished() {
-		return Robot.claw.isGrabbing();
 	}
 
 	@Override

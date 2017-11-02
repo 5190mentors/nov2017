@@ -13,21 +13,24 @@ public class DriveTrain extends Subsystem {
 
 	public DriveTrain() {
 		super("Drive Train");
+		RobotMap.drive.setSafetyEnabled(false);
 
 		LiveWindow.addActuator("Drive Train", "Front_Left Motor", (Jaguar) RobotMap.frontLeftMotor);
 		LiveWindow.addActuator("Drive Train", "Rear Left Motor", (Jaguar) RobotMap.rearLeftMotor);
 		LiveWindow.addActuator("Drive Train", "Front Right Motor", (Jaguar) RobotMap.frontRightMotor);
 		LiveWindow.addActuator("Drive Train", "Rear Right Motor", (Jaguar) RobotMap.rearRightMotor);
-		LiveWindow.addSensor("Drive Train", "Left Encoder", RobotMap.leftEncoder);
-		LiveWindow.addSensor("Drive Train", "Right Encoder", RobotMap.rightEncoder);
+		
+		if (RobotMap.enableEncoders) {
+			LiveWindow.addSensor("Drive Train", "Left Encoder", RobotMap.leftEncoder);
+			LiveWindow.addSensor("Drive Train", "Right Encoder", RobotMap.rightEncoder);
+		}
 		
 		if (RobotMap.enableNavX)
 			LiveWindow.addSensor("Drive Train", "NavX", RobotMap.navx);
 	}
 	
 	public void initialize()
-	{
-		
+	{		
 	}
 
 	public void end()
@@ -40,6 +43,7 @@ public class DriveTrain extends Subsystem {
 		return false;
 	}
 	
+	@Override
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleDriveWithJoystick());
 	}
@@ -49,11 +53,12 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void updateSmartDashboard() {
-		SmartDashboard.putNumber(	"DriveTrain.LeftEncoder", 		RobotMap.leftEncoder.getDistance());
-		SmartDashboard.putNumber(	"DriveTrain.RightEncoder", 		RobotMap.rightEncoder.getDistance());
+		if (RobotMap.enableEncoders) {
+			SmartDashboard.putNumber(	"DriveTrain.LeftEncoder", 		RobotMap.leftEncoder.getDistance());
+			SmartDashboard.putNumber(	"DriveTrain.RightEncoder", 		RobotMap.rightEncoder.getDistance());
+		}
 
-		if (RobotMap.enableNavX)
-		{
+		if (RobotMap.enableNavX) {
 			SmartDashboard.putBoolean(  "DriveTrain.NavX.Connected",	RobotMap.navx.isConnected());
 	        SmartDashboard.putBoolean(  "DriveTrain.NavX.IsCalibrating",RobotMap.navx.isCalibrating());
 	        SmartDashboard.putNumber(   "DriveTrain.NavX.Yaw",			RobotMap.navx.getYaw());

@@ -5,7 +5,6 @@
 package org.usfirst.frc.team5190.robot.subsystems;
 
 import org.usfirst.frc.team5190.robot.RobotMap;
-import org.usfirst.frc.team5190.robot.commands.OpenClaw;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;

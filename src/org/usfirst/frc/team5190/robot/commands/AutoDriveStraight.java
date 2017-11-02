@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutoDriveStraight extends Command {
 	public AutoDriveStraight() {
 		super("AutoDriveStraight");
+		requires(Robot.drivetrain);
 		requires(Robot.straightDrive);
 	}
 
@@ -35,7 +36,7 @@ public class AutoDriveStraight extends Command {
 	protected void end() {
 		// we won't disable the PID loop of balance drive so that it maintains its balance
 		// next in line should do this.
-		// Robot.straightDrive.end();
+//		Robot.straightDrive.end();
 		System.out.println("Leaving command - AutoDriveStraight");
 	}
 

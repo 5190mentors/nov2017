@@ -51,10 +51,12 @@ public class Robot extends IterativeRobot {
 		RobotMap.frontRightMotor = new Jaguar(RobotMap.spFrontRight);
 		RobotMap.rearRightMotor = new Jaguar(RobotMap.spRearRight);
 
-		RobotMap.leftEncoder = new Encoder(RobotMap.dtLeftEncPortA, RobotMap.dtLeftEncPortB);
-		RobotMap.rightEncoder = new Encoder(RobotMap.dtRightEncPortA, RobotMap.dtRightEncPortA);
-		RobotMap.leftEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
-		RobotMap.rightEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
+		if (RobotMap.enableEncoders) {
+			RobotMap.leftEncoder = new Encoder(RobotMap.dtLeftEncPortA, RobotMap.dtLeftEncPortB);
+			RobotMap.rightEncoder = new Encoder(RobotMap.dtRightEncPortA, RobotMap.dtRightEncPortA);
+			RobotMap.leftEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
+			RobotMap.rightEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
+		}
 
 		RobotMap.drive = new RobotDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor, RobotMap.rearRightMotor);
 
@@ -64,8 +66,7 @@ public class Robot extends IterativeRobot {
 		if (RobotMap.enableClaw)
 			RobotMap.grip = new Solenoid(RobotMap.spGrip);
 		
-		if (RobotMap.enableElevator)
-		{
+		if (RobotMap.enableElevator) {
 			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
 			RobotMap.elevatorSensor = new AnalogPotentiometer(RobotMap.spElevatorPot, 1.0 / 5.0);
 		}
@@ -119,7 +120,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		updateSmartDashboard();
+//		updateSmartDashboard();
 	}
 
 	@Override

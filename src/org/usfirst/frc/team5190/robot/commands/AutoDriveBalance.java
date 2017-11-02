@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutoDriveBalance extends Command {
 	public AutoDriveBalance() {
 		super("AutoDriveBalance");
+		requires(Robot.drivetrain);
 		requires(Robot.balanceDrive);
 	}
 

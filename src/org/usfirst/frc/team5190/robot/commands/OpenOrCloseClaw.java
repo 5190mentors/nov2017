@@ -8,21 +8,24 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 
 import org.usfirst.frc.team5190.robot.Robot;
 
-public class OpenClaw extends TimedCommand {
-	public OpenClaw() {
-		super("OpenClaw", 1);
+public class OpenOrCloseClaw extends TimedCommand {
+	public OpenOrCloseClaw() {
+		super("OpenOrCloseClaw", 1);
 		requires(Robot.claw);
 	}
 
 	@Override
 	protected void initialize() {
-		System.out.println("Entering command - OpenClaw");
+		System.out.println("Entering command - OpenOrCloseClaw");
 		Robot.endPIDloops();
-		Robot.claw.open();
+		if (Robot.claw.isGrabbing())
+			Robot.claw.open();
+		else
+			Robot.claw.close();
 	}
 
 	@Override
 	protected void end() {
-		System.out.println("Leaving command - OpenClaw");
+		System.out.println("Leaving command - OpenOrCloseClaw");
 	}
 }

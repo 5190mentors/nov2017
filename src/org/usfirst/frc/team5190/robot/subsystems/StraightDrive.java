@@ -1,7 +1,6 @@
 package org.usfirst.frc.team5190.robot.subsystems;
 
 import org.usfirst.frc.team5190.robot.RobotMap;
-import org.usfirst.frc.team5190.robot.commands.AutoDriveStraight;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -10,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class StraightDrive extends PIDSubsystem {
 
 	protected double m_pidOut;
-	protected double m_setPoint;
+	protected double m_setPoint = RobotMap.kMaxPitch - 1;
 	
     public StraightDrive() {
     	super("Straight Drive", RobotMap.kPsd, RobotMap.kIsd, RobotMap.kDsd, RobotMap.kFsd);
@@ -20,15 +19,13 @@ public class StraightDrive extends PIDSubsystem {
     
     public void initialize()
     {
-    	if (RobotMap.enableNavX)
+    	if (RobotMap.enableNavX) {
     		RobotMap.navx.reset();
-    	getPIDController().setContinuous(false);
-    	getPIDController().setSetpoint(5);
-    	setPercentTolerance(10);
-    	setInputRange(0, RobotMap.kMaxPitch);
-    	setOutputRange(-1, 1);
-    	
-    	m_setPoint = 5;
+    	}
+
+    	getPIDController().setSetpoint(m_setPoint);
+    	setAbsoluteTolerance(0.5);
+    	setOutputRange(-0.7, 0.7);
     	
     	// start the PID loop
     	enable();
@@ -52,6 +49,7 @@ public class StraightDrive extends PIDSubsystem {
     	
         double pitch = RobotMap.navx.getPitch();
         
+        // trip dips on the way forward as no dips. no need to back up
         if (pitch < 0)
         	return 0;
         
@@ -61,12 +59,19 @@ public class StraightDrive extends PIDSubsystem {
     @Override
     protected void usePIDOutput(double output) {
     	m_pidOut = output;
-    	RobotMap.drive.arcadeDrive(output, 0);
+		System.out.println(returnPIDInput() +  " --- " + output);
+    	RobotMap.drive.drive(output, 0);
     }
 
     public void updateSmartDashboard() {
     	SmartDashboard.putNumber("StraightDrive.DistanceDriveSetpoint", this.getSetpoint());
     	SmartDashboard.putNumber("StraightDrive.PIDInput", this.returnPIDInput());
     	SmartDashboard.putNumber("StraightDrive.PIDOutput", m_pidOut);
+    }
+    
+    @Override
+    public boolean onTarget()
+    {
+    	return (Math.abs(m_setPoint - RobotMap.navx.getPitch()) < 0.5);
     }
 }

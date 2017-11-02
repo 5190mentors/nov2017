@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5190.robot;
 
 import org.usfirst.frc.team5190.robot.commands.AutoTeeterTotter;
+import org.usfirst.frc.team5190.robot.commands.OpenOrCloseClaw;
 import org.usfirst.frc.team5190.robot.commands.Pickup;
 import org.usfirst.frc.team5190.robot.commands.Place;
 import org.usfirst.frc.team5190.robot.commands.PrepareToPickup;
@@ -8,7 +9,6 @@ import org.usfirst.frc.team5190.robot.commands.StopTeeterTotter;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -19,7 +19,7 @@ public class OI {
 	
 	public OI() {
 		// Create some buttons
-//		JoystickButton b0 = new JoystickButton(joy, 1);
+		JoystickButton b0 = new JoystickButton(joy, 1);
 //		JoystickButton b1 = new JoystickButton(joy, 2);
 		JoystickButton b2 = new JoystickButton(joy, 3);
 		JoystickButton b3 = new JoystickButton(joy, 4);
@@ -33,6 +33,7 @@ public class OI {
 //		JoystickButton b11 = new JoystickButton(joy, 12);
 
 		// Connect the buttons to commands
+		b0.whenPressed(new OpenOrCloseClaw());
 		b2.whenPressed(new PrepareToPickup());
 		b3.whenPressed(new Pickup());
 		b4.whenPressed(new Place());		

@@ -12,6 +12,7 @@ public class StopTeeterTotter extends Command {
 
 	public StopTeeterTotter() {
 		super("StopTeeterTotter");
+		requires(Robot.drivetrain);
 		requires(Robot.straightDrive);
 		requires(Robot.balanceDrive);
 	}
