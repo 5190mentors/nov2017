@@ -32,6 +32,7 @@ public class TeeterTotter extends PIDSubsystem {
         	m_currentStage = Stage.STRAIGHT_DRIVE;
         	m_setPoint = RobotMap.kMaxPitch - 1;
         	m_tolerance = 0.5;
+
         	getPIDController().setPID(RobotMap.kPsd, RobotMap.kIsd, RobotMap.kDsd, RobotMap.kFsd);
         	getPIDController().setSetpoint(m_setPoint);
         	setAbsoluteTolerance(m_tolerance);
