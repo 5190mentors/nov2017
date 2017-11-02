@@ -34,15 +34,13 @@ public class RobotMap {
 	public static Encoder leftEncoder;
 	public static Encoder rightEncoder;
 
-	// STRAIGHT DRIVE
+	// TEETER TOTTER
 	public static final double kPsd = 0.07; //0.1;
 	public static final double kIsd = 0;
 	public static final double kDsd = 0; //0.3;
 	public static final double kFsd = 0; //0.001;
 	public static final double kMaxPitch = 9;
-	public static final double kMaxSpeed = 0.15;
-	
-	// BALANCE DRIVE
+	public static final double kMaxSpeed = 0.15;	
 	public static final double kPbd = kMaxSpeed / kMaxPitch;
 	public static final double kIbd = 0;
 	public static final double kDbd = 0;

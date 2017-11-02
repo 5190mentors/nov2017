@@ -1,10 +1,9 @@
 package org.usfirst.frc.team5190.robot;
 
-import org.usfirst.frc.team5190.robot.subsystems.BalanceDrive;
 import org.usfirst.frc.team5190.robot.subsystems.Claw;
 import org.usfirst.frc.team5190.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5190.robot.subsystems.Elevator;
-import org.usfirst.frc.team5190.robot.subsystems.StraightDrive;
+import org.usfirst.frc.team5190.robot.subsystems.TeeterTotter;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -32,8 +31,7 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 
 	public static DriveTrain drivetrain;
-	public static StraightDrive straightDrive;
-	public static BalanceDrive balanceDrive;
+	public static TeeterTotter teeterTotter;
 	
 	public static Elevator elevator;
 	public static Claw claw;
@@ -72,8 +70,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 		drivetrain = new DriveTrain();
-		straightDrive = new StraightDrive();
-		balanceDrive = new BalanceDrive();
+		teeterTotter = new TeeterTotter();
 		elevator = new Elevator();
 		claw = new Claw();
 		
@@ -84,15 +81,13 @@ public class Robot extends IterativeRobot {
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivetrain);
-		SmartDashboard.putData(straightDrive);
-		SmartDashboard.putData(balanceDrive);
+		SmartDashboard.putData(teeterTotter);
 		SmartDashboard.putData(elevator);
 		SmartDashboard.putData(claw);		
 	}
 
 	@Override
 	public void autonomousInit() {
-		endPIDloops();
 		// autonomousCommand.start(); // schedule the autonomous command (example)
 	}
 
@@ -111,7 +106,6 @@ public class Robot extends IterativeRobot {
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		// autonomousCommand.cancel();
-		endPIDloops();
 	}
 
 	/**
@@ -125,7 +119,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void testInit() {
-		endPIDloops();
 	}
 	
 	/**
@@ -138,20 +131,8 @@ public class Robot extends IterativeRobot {
 	
 	public void updateSmartDashboard() {
 		drivetrain.updateSmartDashboard();
-		straightDrive.updateSmartDashboard();
-		balanceDrive.updateSmartDashboard();
+		teeterTotter.updateSmartDashboard();
 		elevator.updateSmartDashboard();
 		claw.updateSmartDashboard();
-	}
-
-	public static void endPIDloops() {
-		if (straightDrive.getPIDController().isEnabled())
-			straightDrive.end();
-		
-		if (balanceDrive.getPIDController().isEnabled())
-			balanceDrive.end();
-		
-		if (elevator.getPIDController().isEnabled())
-			elevator.end();
 	}
 }

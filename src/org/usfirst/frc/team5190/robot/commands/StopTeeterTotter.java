@@ -13,14 +13,14 @@ public class StopTeeterTotter extends Command {
 	public StopTeeterTotter() {
 		super("StopTeeterTotter");
 		requires(Robot.drivetrain);
-		requires(Robot.straightDrive);
-		requires(Robot.balanceDrive);
+		requires(Robot.teeterTotter);
 	}
 
 	@Override
 	protected void initialize() {
 		System.out.println("Entering command - StopTeeterTotter");
-		Robot.endPIDloops();
+		// is the following needed? Wouldn't the interruption to autoteetertotter command do this anyway?
+		Robot.teeterTotter.end();
 	}
 	
 	@Override
