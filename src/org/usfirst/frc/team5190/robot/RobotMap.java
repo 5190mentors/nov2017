@@ -53,13 +53,17 @@ public class RobotMap {
 	
 	// ELEVATOR
 	public static final boolean enableElevator = false;
+	public static final boolean enableElevatorPot = false;
 	public static final int spElevatorMotor = 4;
 	public static final int spElevatorPot = 4;
+	public static final double kLow = 1;
+	public static final double kMiddle = 2.5;
+	public static final double kHigh = 4.5;
 	public static final double kPel = 1; // 18;
 	public static final double kIel = 0; //0.07;
 	public static final double kDel = 0; //0.2;
 	public static SpeedController elevatorMotor;
-	public static Potentiometer elevatorSensor;
+	public static Potentiometer elevatorPot;
 
 //	public static boolean leftEncoderDisabled = false;
 //	public static boolean rightEncoderDisabled = false;

@@ -17,7 +17,6 @@ public class OpenOrCloseClaw extends TimedCommand {
 	@Override
 	protected void initialize() {
 		System.out.println("Entering command - OpenOrCloseClaw");
-		Robot.endPIDloops();
 		if (Robot.claw.isGrabbing())
 			Robot.claw.open();
 		else

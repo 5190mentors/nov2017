@@ -3,6 +3,7 @@ package org.usfirst.frc.team5190.robot;
 import org.usfirst.frc.team5190.robot.subsystems.Claw;
 import org.usfirst.frc.team5190.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5190.robot.subsystems.Elevator;
+import org.usfirst.frc.team5190.robot.subsystems.ElevatorUsingPot;
 import org.usfirst.frc.team5190.robot.subsystems.TeeterTotter;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -33,7 +35,7 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain drivetrain;
 	public static TeeterTotter teeterTotter;
 	
-	public static Elevator elevator;
+	public static Subsystem elevator;
 	public static Claw claw;
 	public static OI oi;
 
@@ -66,12 +68,20 @@ public class Robot extends IterativeRobot {
 		
 		if (RobotMap.enableElevator) {
 			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
-			RobotMap.elevatorSensor = new AnalogPotentiometer(RobotMap.spElevatorPot, 1.0 / 5.0);
+			
+			if (RobotMap.enableElevatorPot)
+				RobotMap.elevatorPot = new AnalogPotentiometer(RobotMap.spElevatorPot, 1.0 / 5.0);
 		}
 		
 		drivetrain = new DriveTrain();
 		teeterTotter = new TeeterTotter();
-		elevator = new Elevator();
+		if (RobotMap.enableElevator) {
+			elevator = new ElevatorUsingPot();
+		}
+		else {
+			elevator = new Elevator();
+		}
+		
 		claw = new Claw();
 		
 		oi = new OI();
@@ -132,7 +142,6 @@ public class Robot extends IterativeRobot {
 	public void updateSmartDashboard() {
 		drivetrain.updateSmartDashboard();
 		teeterTotter.updateSmartDashboard();
-		elevator.updateSmartDashboard();
 		claw.updateSmartDashboard();
 	}
 }

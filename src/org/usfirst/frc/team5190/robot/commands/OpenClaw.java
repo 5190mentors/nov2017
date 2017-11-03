@@ -17,7 +17,6 @@ public class OpenClaw extends TimedCommand {
 	@Override
 	protected void initialize() {
 		System.out.println("Entering command - OpenClaw");
-		Robot.endPIDloops();
 		Robot.claw.open();
 	}
 
