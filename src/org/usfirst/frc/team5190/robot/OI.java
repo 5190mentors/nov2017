@@ -4,8 +4,9 @@ import org.usfirst.frc.team5190.robot.commands.AutoTeeterTotter;
 import org.usfirst.frc.team5190.robot.commands.OpenOrCloseClaw;
 import org.usfirst.frc.team5190.robot.commands.Pickup;
 import org.usfirst.frc.team5190.robot.commands.Place;
-import org.usfirst.frc.team5190.robot.commands.PrepareToPickup;
+import org.usfirst.frc.team5190.robot.commands.SetElevatorSetpoint;
 import org.usfirst.frc.team5190.robot.commands.StopTeeterTotter;
+import org.usfirst.frc.team5190.robot.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -34,9 +35,9 @@ public class OI {
 
 		// Connect the buttons to commands
 		b0.whenPressed(new OpenOrCloseClaw());
-		b2.whenPressed(new PrepareToPickup());
-		b3.whenPressed(new Pickup());
-		b4.whenPressed(new Place());		
+		b2.whenPressed(new SetElevatorSetpoint(Elevator.Height.LOW));
+		b3.whenPressed(new SetElevatorSetpoint(Elevator.Height.MIDDLE));
+		b4.whenPressed(new SetElevatorSetpoint(Elevator.Height.HIGH));		
 		b5.whenPressed(new AutoTeeterTotter());
 		b6.whenPressed(new StopTeeterTotter());
 	}

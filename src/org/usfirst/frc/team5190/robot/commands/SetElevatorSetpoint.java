@@ -4,14 +4,17 @@
  */
 package org.usfirst.frc.team5190.robot.commands;
 
+import org.usfirst.frc.team5190.robot.Robot;
+import org.usfirst.frc.team5190.robot.RobotMap;
+import org.usfirst.frc.team5190.robot.subsystems.Elevator;
+import org.usfirst.frc.team5190.robot.subsystems.ElevatorUsingPot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc.team5190.robot.Robot;
-
 public class SetElevatorSetpoint extends Command {
-	private double setpoint;
+	private Elevator.Height setpoint;
 
-	public SetElevatorSetpoint(double setpoint) {
+	public SetElevatorSetpoint(Elevator.Height setpoint) {
 		super("Elevator");
 		requires(Robot.elevator);
 		this.setpoint = setpoint;
@@ -20,8 +23,10 @@ public class SetElevatorSetpoint extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("Entering command - SetElevatorSetpoint");
-		Robot.endPIDloops();
-		Robot.elevator.initialize(setpoint);
+		if (RobotMap.enableElevator)
+			((ElevatorUsingPot) Robot.elevator).initialize(setpoint);
+		else
+			((Elevator) Robot.elevator).initialize(setpoint);
 	}
 
 	@Override
@@ -31,14 +36,18 @@ public class SetElevatorSetpoint extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Robot.elevator.onTarget();
+		if (RobotMap.enableElevator)
+			return ((ElevatorUsingPot) Robot.elevator).onTarget();
+		else
+			return ((Elevator) Robot.elevator).onTarget();
 	}
 	
 	@Override
 	protected void end() {
-		// we won't disable the PID loop of balance drive so that it maintains its balance
-		// next in line should do this.
-		// Robot.elevator.end();
 		System.out.println("Leaving command - SetElevatorSetpoint");
+		if (RobotMap.enableElevator)
+			((ElevatorUsingPot) Robot.elevator).end();
+		else
+			((Elevator) Robot.elevator).end();
 	}	
 }

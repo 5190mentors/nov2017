@@ -14,7 +14,6 @@ public class TeleDriveWithJoystick extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("Entering command - ArcadeDriveWithJoyStick");
-		Robot.endPIDloops();
 		Robot.drivetrain.initialize();
 	}
 	

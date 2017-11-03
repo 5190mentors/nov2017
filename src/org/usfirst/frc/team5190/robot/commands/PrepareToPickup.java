@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5190.robot.commands;
 
+import org.usfirst.frc.team5190.robot.subsystems.Elevator;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -8,6 +10,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PrepareToPickup extends CommandGroup {
 	public PrepareToPickup() {
 		addSequential(new OpenClaw());
-		addSequential(new SetElevatorSetpoint(0));
+		addSequential(new SetElevatorSetpoint(Elevator.Height.LOW));
 	}
 }
