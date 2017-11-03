@@ -4,59 +4,57 @@
  */
 package org.usfirst.frc.team5190.robot.subsystems;
 
+import org.usfirst.frc.team5190.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * The claw subsystem is a simple system with a motor for opening and closing.
- * If using stronger motors, you should probably use a sensor so that the motors
- * don't stall.
- */
 public class Claw extends Subsystem {
-//	private SpeedController motor = new Victor(7);
-//	private DigitalInput contact = new DigitalInput(5);
 
+	public boolean m_lastStatus;
+	
 	public Claw() {
-		super();
+		super("Claw");
 
-		// Let's show everything on the LiveWindow
-//		LiveWindow.addActuator("Claw", "Motor", (Victor) motor);
-//		LiveWindow.addActuator("Claw", "Limit Switch", contact);
+		if (RobotMap.enableClaw)
+		{
+			LiveWindow.addActuator("Claw", "Solenoid", (Solenoid) RobotMap.grip);
+		}
 	}
 
-	@Override
+	public void initialize()
+	{
+	}
+
+	public void end()
+	{
+	}
+	
 	public void initDefaultCommand() {
 	}
 
-	public void log() {
-	}
-
-	/**
-	 * Set the claw motor to move in the open direction.
-	 */
 	public void open() {
-//		motor.set(-1);
+		if (RobotMap.enableClaw)
+			RobotMap.grip.set(false);
+		m_lastStatus = false;
 	}
-
-	/**
-	 * Set the claw motor to move in the close direction.
-	 */
+	
 	public void close() {
-//		motor.set(1);
+		if (RobotMap.enableClaw)
+			RobotMap.grip.set(true);
+		m_lastStatus = true;
 	}
 
-	/**
-	 * Stops the claw motor from moving.
-	 */
-	public void stop() {
-//		motor.set(0);
-	}
-
-	/**
-	 * Return true when the robot is grabbing an object hard enough to trigger
-	 * the limit switch.
-	 */
 	public boolean isGrabbing() {
-//		return contact.get();
-		return false;
+		if (RobotMap.enableClaw)
+			return RobotMap.grip.get();
+		else
+			return m_lastStatus;
+	}
+	
+	public void updateSmartDashboard() {
+		SmartDashboard.putBoolean("Claw.Status", this.isGrabbing());
 	}
 }

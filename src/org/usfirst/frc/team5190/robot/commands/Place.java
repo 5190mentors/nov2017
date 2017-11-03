@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5190.robot.commands;
 
+import org.usfirst.frc.team5190.robot.subsystems.Elevator;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -7,8 +9,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class Place extends CommandGroup {
 	public Place() {
-		addSequential(new SetElevatorSetpoint(0.25));
-		addSequential(new SetWristSetpoint(0));
+		addSequential(new SetElevatorSetpoint(Elevator.Height.MIDDLE));
 		addSequential(new OpenClaw());
 	}
 }

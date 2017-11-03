@@ -1,14 +1,24 @@
 package org.usfirst.frc.team5190.robot;
 
-import org.usfirst.frc.team5190.robot.commands.Autonomous;
 import org.usfirst.frc.team5190.robot.subsystems.Claw;
 import org.usfirst.frc.team5190.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5190.robot.subsystems.Elevator;
-import org.usfirst.frc.team5190.robot.subsystems.Wrist;
+import org.usfirst.frc.team5190.robot.subsystems.ElevatorUsingPot;
+import org.usfirst.frc.team5190.robot.subsystems.TeeterTotter;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,8 +33,9 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 
 	public static DriveTrain drivetrain;
-	public static Elevator elevator;
-	public static Wrist wrist;
+	public static TeeterTotter teeterTotter;
+	
+	public static Subsystem elevator;
 	public static Claw claw;
 	public static OI oi;
 
@@ -34,26 +45,60 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		// Initialize all subsystems
+		// Initialize drive train
+		RobotMap.frontLeftMotor = new Jaguar(RobotMap.spFrontLeft);
+		RobotMap.rearLeftMotor = new Jaguar(RobotMap.spRearLeft);
+		RobotMap.frontRightMotor = new Jaguar(RobotMap.spFrontRight);
+		RobotMap.rearRightMotor = new Jaguar(RobotMap.spRearRight);
+
+		if (RobotMap.enableEncoders) {
+			RobotMap.leftEncoder = new Encoder(RobotMap.dtLeftEncPortA, RobotMap.dtLeftEncPortB);
+			RobotMap.rightEncoder = new Encoder(RobotMap.dtRightEncPortA, RobotMap.dtRightEncPortA);
+			RobotMap.leftEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
+			RobotMap.rightEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
+		}
+
+		RobotMap.drive = new RobotDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor, RobotMap.rearRightMotor);
+
+		if (RobotMap.enableNavX)
+			RobotMap.navx = new AHRS(SPI.Port.kMXP, RobotMap.kNavUpdateHz);
+
+		if (RobotMap.enableClaw)
+			RobotMap.grip = new Solenoid(RobotMap.spGrip);
+		
+		if (RobotMap.enableElevator) {
+			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
+			
+			if (RobotMap.enableElevatorPot)
+				RobotMap.elevatorPot = new AnalogPotentiometer(RobotMap.spElevatorPot, 1.0 / 5.0);
+		}
+		
 		drivetrain = new DriveTrain();
-		elevator = new Elevator();
-		wrist = new Wrist();
+		teeterTotter = new TeeterTotter();
+		if (RobotMap.enableElevator) {
+			elevator = new ElevatorUsingPot();
+		}
+		else {
+			elevator = new Elevator();
+		}
+		
 		claw = new Claw();
+		
 		oi = new OI();
 
 		// instantiate the command used for the autonomous period
-		autonomousCommand = new Autonomous();
+		// autonomousCommand = new Autonomous();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivetrain);
+		SmartDashboard.putData(teeterTotter);
 		SmartDashboard.putData(elevator);
-		SmartDashboard.putData(wrist);
-		SmartDashboard.putData(claw);
+		SmartDashboard.putData(claw);		
 	}
 
 	@Override
 	public void autonomousInit() {
-		autonomousCommand.start(); // schedule the autonomous command (example)
+		// autonomousCommand.start(); // schedule the autonomous command (example)
 	}
 
 	/**
@@ -62,7 +107,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		log();
 	}
 
 	@Override
@@ -71,7 +115,7 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		autonomousCommand.cancel();
+		// autonomousCommand.cancel();
 	}
 
 	/**
@@ -80,9 +124,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		log();
+//		updateSmartDashboard();
 	}
 
+	@Override
+	public void testInit() {
+	}
+	
 	/**
 	 * This function is called periodically during test mode
 	 */
@@ -90,14 +138,10 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
-
-	/**
-	 * The log method puts interesting information to the SmartDashboard.
-	 */
-	private void log() {
-		wrist.log();
-		elevator.log();
-		drivetrain.log();
-		claw.log();
+	
+	public void updateSmartDashboard() {
+		drivetrain.updateSmartDashboard();
+		teeterTotter.updateSmartDashboard();
+		claw.updateSmartDashboard();
 	}
 }

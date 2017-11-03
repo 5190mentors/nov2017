@@ -4,34 +4,50 @@
  */
 package org.usfirst.frc.team5190.robot.commands;
 
+import org.usfirst.frc.team5190.robot.Robot;
+import org.usfirst.frc.team5190.robot.RobotMap;
+import org.usfirst.frc.team5190.robot.subsystems.Elevator;
+import org.usfirst.frc.team5190.robot.subsystems.ElevatorUsingPot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc.team5190.robot.Robot;
-
-/**
- * Move the elevator to a given location. This command finishes when it is
- * within the tolerance, but leaves the PID loop running to maintain the
- * position. Other commands using the elevator should make sure they disable
- * PID!
- */
 public class SetElevatorSetpoint extends Command {
-	private double setpoint;
+	private Elevator.Height setpoint;
 
-	public SetElevatorSetpoint(double setpoint) {
-		this.setpoint = setpoint;
+	public SetElevatorSetpoint(Elevator.Height setpoint) {
+		super("Elevator");
 		requires(Robot.elevator);
+		this.setpoint = setpoint;
 	}
 
-	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.elevator.enable();
-		Robot.elevator.setSetpoint(setpoint);
+		System.out.println("Entering command - SetElevatorSetpoint");
+		if (RobotMap.enableElevator)
+			((ElevatorUsingPot) Robot.elevator).initialize(setpoint);
+		else
+			((Elevator) Robot.elevator).initialize(setpoint);
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected void execute() {
+		// Nothing to execute. PID on straight drive takes care of execution
+	}
+
 	@Override
 	protected boolean isFinished() {
-		return Robot.elevator.onTarget();
+		if (RobotMap.enableElevator)
+			return ((ElevatorUsingPot) Robot.elevator).onTarget();
+		else
+			return ((Elevator) Robot.elevator).onTarget();
 	}
+	
+	@Override
+	protected void end() {
+		System.out.println("Leaving command - SetElevatorSetpoint");
+		if (RobotMap.enableElevator)
+			((ElevatorUsingPot) Robot.elevator).end();
+		else
+			((Elevator) Robot.elevator).end();
+	}	
 }
