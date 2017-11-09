@@ -8,9 +8,9 @@ import org.usfirst.frc.team5190.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class StopTeeterTotter extends Command {
+public class TeeterTotterStop extends Command {
 
-	public StopTeeterTotter() {
+	public TeeterTotterStop() {
 		super("StopTeeterTotter");
 		requires(Robot.drivetrain);
 		requires(Robot.teeterTotter);
@@ -19,8 +19,7 @@ public class StopTeeterTotter extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("Entering command - StopTeeterTotter");
-		// is the following needed? Wouldn't the interruption to autoteetertotter command do this anyway?
-		Robot.teeterTotter.end();
+		Robot.teeterTotter.stop();
 	}
 	
 	@Override

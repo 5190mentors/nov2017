@@ -1,28 +1,38 @@
 package org.usfirst.frc.team5190.robot.subsystems;
 
+import org.usfirst.frc.team5190.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Elevator extends Subsystem {
 	
-	public enum Height {LOW, MIDDLE, HIGH};
-	public Height m_setPoint;
-
 	public Elevator() {
 		super("Elevator");
+		
+		LiveWindow.addActuator("Elevator", "Motor", (Jaguar) RobotMap.elevatorMotor);
+
+		if (RobotMap.reverseElevator) {
+			((Jaguar) RobotMap.elevatorMotor).setInverted(true);
+		}
+		
+		reset();
 	}
 	
-    public void initialize(Height setpoint)
-    {
-    	m_setPoint = setpoint;
+    public void reset() {
+    	RobotMap.elevatorMotor.stopMotor();
+    	System.out.println("Elevator: Reset completed");
     }
     
     public void initDefaultCommand() {	
+    }    
+
+    public void up() {
+    	RobotMap.elevatorMotor.set(RobotMap.kElevSpeed);
     }
     
-    public void end() {
+    public void down() {
+    	RobotMap.elevatorMotor.set(-RobotMap.kElevSpeed);
     }
-    
-	public boolean onTarget() {
-		return true;
-	}
 }

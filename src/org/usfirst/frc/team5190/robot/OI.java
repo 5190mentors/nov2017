@@ -1,12 +1,11 @@
 package org.usfirst.frc.team5190.robot;
 
-import org.usfirst.frc.team5190.robot.commands.AutoTeeterTotter;
-import org.usfirst.frc.team5190.robot.commands.OpenOrCloseClaw;
-import org.usfirst.frc.team5190.robot.commands.Pickup;
-import org.usfirst.frc.team5190.robot.commands.Place;
-import org.usfirst.frc.team5190.robot.commands.SetElevatorSetpoint;
-import org.usfirst.frc.team5190.robot.commands.StopTeeterTotter;
-import org.usfirst.frc.team5190.robot.subsystems.Elevator;
+import org.usfirst.frc.team5190.robot.commands.TeeterTotterStart;
+import org.usfirst.frc.team5190.robot.commands.ElevatorDown;
+import org.usfirst.frc.team5190.robot.commands.ClawOpenOrClose;
+import org.usfirst.frc.team5190.robot.commands.SubsystemsReset;
+import org.usfirst.frc.team5190.robot.commands.TeeterTotterStop;
+import org.usfirst.frc.team5190.robot.commands.ElevatorUp;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -21,9 +20,9 @@ public class OI {
 	public OI() {
 		// Create some buttons
 		JoystickButton b0 = new JoystickButton(joy, 1);
-//		JoystickButton b1 = new JoystickButton(joy, 2);
+		JoystickButton b1 = new JoystickButton(joy, 2);
 		JoystickButton b2 = new JoystickButton(joy, 3);
-		JoystickButton b3 = new JoystickButton(joy, 4);
+//		JoystickButton b3 = new JoystickButton(joy, 4);
 		JoystickButton b4 = new JoystickButton(joy, 5);
 		JoystickButton b5 = new JoystickButton(joy, 6);
 		JoystickButton b6 = new JoystickButton(joy, 7);
@@ -34,12 +33,12 @@ public class OI {
 //		JoystickButton b11 = new JoystickButton(joy, 12);
 
 		// Connect the buttons to commands
-		b0.whenPressed(new OpenOrCloseClaw());
-		b2.whenPressed(new SetElevatorSetpoint(Elevator.Height.LOW));
-		b3.whenPressed(new SetElevatorSetpoint(Elevator.Height.MIDDLE));
-		b4.whenPressed(new SetElevatorSetpoint(Elevator.Height.HIGH));		
-		b5.whenPressed(new AutoTeeterTotter());
-		b6.whenPressed(new StopTeeterTotter());
+		b0.whenPressed(new ClawOpenOrClose());
+		b1.whenPressed(new SubsystemsReset());
+		b2.whileHeld(new ElevatorUp());
+		b4.whileHeld(new ElevatorDown());
+		b5.whenPressed(new TeeterTotterStart());
+		b6.whenPressed(new TeeterTotterStop());
 	}
 
 	public Joystick getJoystick() {

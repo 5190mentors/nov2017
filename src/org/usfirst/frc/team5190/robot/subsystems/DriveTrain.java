@@ -1,21 +1,20 @@
 package org.usfirst.frc.team5190.robot.subsystems;
 
 import org.usfirst.frc.team5190.robot.RobotMap;
-import org.usfirst.frc.team5190.robot.commands.TeleDriveWithJoystick;
+import org.usfirst.frc.team5190.robot.commands.DriveTrainJoystickDrive;
 
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
 
 	public DriveTrain() {
 		super("Drive Train");
-		RobotMap.drive.setSafetyEnabled(false);
 
-		LiveWindow.addActuator("Drive Train", "Front_Left Motor", (Jaguar) RobotMap.frontLeftMotor);
+		LiveWindow.addActuator("Drive Train", "Front Left Motor", (Jaguar) RobotMap.frontLeftMotor);
 		LiveWindow.addActuator("Drive Train", "Rear Left Motor", (Jaguar) RobotMap.rearLeftMotor);
 		LiveWindow.addActuator("Drive Train", "Front Right Motor", (Jaguar) RobotMap.frontRightMotor);
 		LiveWindow.addActuator("Drive Train", "Rear Right Motor", (Jaguar) RobotMap.rearRightMotor);
@@ -27,68 +26,52 @@ public class DriveTrain extends Subsystem {
 		
 		if (RobotMap.enableNavX)
 			LiveWindow.addSensor("Drive Train", "NavX", RobotMap.navx);
-	}
-	
-	public void initialize()
-	{		
-	}
+		
+		if (RobotMap.reverseDrive) {
+			RobotMap.drive.setInvertedMotor(MotorType.kFrontLeft, true);
+			RobotMap.drive.setInvertedMotor(MotorType.kFrontRight, true);
+			RobotMap.drive.setInvertedMotor(MotorType.kRearLeft, true);
+			RobotMap.drive.setInvertedMotor(MotorType.kRearRight, true);
+		}			
 
-	public void end()
-	{
-		RobotMap.drive.arcadeDrive(0, 0);		
+		reset();
 	}
 	
-	public boolean onTarget()
-	{
-		return false;
+	public void reset() {		
+		if (RobotMap.enableEncoders) {
+			RobotMap.leftEncoder.reset();
+			RobotMap.rightEncoder.reset();
+		}
+
+		if (RobotMap.enableNavX)
+			RobotMap.navx.reset();
+		
+		// stop the motors
+		RobotMap.drive.arcadeDrive(0, 0);
+		
+		// reset the throttle
+		RobotMap.drive.setMaxOutput(0.5);
+
+    	System.out.println("Drive Train: Reset completed");
 	}
 	
 	@Override
 	public void initDefaultCommand() {
-		setDefaultCommand(new TeleDriveWithJoystick());
+		setDefaultCommand(new DriveTrainJoystickDrive());
 	}
 
 	public void drive(Joystick joy) {
 		RobotMap.drive.arcadeDrive(joy);
 	}
 
-	public void updateSmartDashboard() {
-		if (RobotMap.enableEncoders) {
-			SmartDashboard.putNumber(	"DriveTrain.LeftEncoder", 		RobotMap.leftEncoder.getDistance());
-			SmartDashboard.putNumber(	"DriveTrain.RightEncoder", 		RobotMap.rightEncoder.getDistance());
-		}
+	public void setThrottle(double throttle) {
+		if (throttle < 1 && throttle > 0)
+			RobotMap.drive.setMaxOutput(throttle);
+		else if (throttle < 0)
+			RobotMap.drive.setMaxOutput(0.1);
+		else
+			RobotMap.drive.setMaxOutput(1);
 
-		if (RobotMap.enableNavX) {
-			SmartDashboard.putBoolean(  "DriveTrain.NavX.Connected",	RobotMap.navx.isConnected());
-	        SmartDashboard.putBoolean(  "DriveTrain.NavX.IsCalibrating",RobotMap.navx.isCalibrating());
-	        SmartDashboard.putNumber(   "DriveTrain.NavX.Yaw",			RobotMap.navx.getYaw());
-	        SmartDashboard.putNumber(   "DriveTrain.NavX.Pitch",		RobotMap.navx.getPitch());
-	        SmartDashboard.putNumber(   "DriveTrain.NavX.Roll",			RobotMap.navx.getRoll());
-	        
-	        /* Display tilt-corrected, Magnetometer-based heading (requires             */
-	        /* magnetometer calibration to be useful)                                   */
-	        
-	        SmartDashboard.putNumber(   "DriveTrain.NavX.CompassHeading",   RobotMap.navx.getCompassHeading());
-	        
-	        /* Display 9-axis Heading (requires magnetometer calibration to be useful)  */
-	        SmartDashboard.putNumber(   "DriveTrain.NavX.FusedHeading",     RobotMap.navx.getFusedHeading());
-	
-	        /* These functions are compatible w/the WPI Gyro Class, providing a simple  */
-	        /* path for upgrading from the Kit-of-Parts gyro to the NavX-MXP            */
-	        
-	        SmartDashboard.putNumber(   "DriveTrain.NavX.TotalYaw",         RobotMap.navx.getAngle());
-	        SmartDashboard.putNumber(   "DriveTrain.NavX.YawRateDPS",       RobotMap.navx.getRate());
-	        SmartDashboard.putBoolean(  "DriveTrain.NavX.IsMoving",         RobotMap.navx.isMoving());
-	        SmartDashboard.putBoolean(  "DriveTrain.NavX.IsRotating",       RobotMap.navx.isRotating());
-		}
+    	System.out.println("Drive Train: Throttle set to " + throttle);
 	}
-	
-//	public double getDistance() {
-//		return (RobotMap.leftEncoder.getDistance() + RobotMap.rightEncoder.getDistance()) / 2;
-//	}
-//
-//	public double getDistanceToObstacle() {
-//		return rangefinder.getAverageVoltage();
-//		return 0;
-//	}	
 }

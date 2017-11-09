@@ -5,12 +5,11 @@
 package org.usfirst.frc.team5190.robot.commands;
 
 import org.usfirst.frc.team5190.robot.Robot;
-import org.usfirst.frc.team5190.robot.subsystems.TeeterTotter.Stage;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class AutoTeeterTotter extends Command {
-	public AutoTeeterTotter() {
+public class TeeterTotterStart extends Command {
+	public TeeterTotterStart() {
 		super("AutoTeeterTotter");
 		requires(Robot.drivetrain);
 		requires(Robot.teeterTotter);
@@ -18,8 +17,8 @@ public class AutoTeeterTotter extends Command {
 
 	@Override
 	protected void initialize() {
+		Robot.teeterTotter.start();
 		System.out.println("Entering command - AutoTeeterTotter");
-		Robot.teeterTotter.initialize(Stage.STRAIGHT_DRIVE);
 	}
 
 	@Override
@@ -35,13 +34,13 @@ public class AutoTeeterTotter extends Command {
 
 	@Override
 	protected void end() {
-		Robot.teeterTotter.end();
+		Robot.teeterTotter.stop();
 		System.out.println("Leaving command - AutoTeeterTotter");
 	}
 
 	@Override
 	protected void interrupted() {
-		Robot.teeterTotter.end();
+		Robot.teeterTotter.stop();
 		System.out.println("Cancelling command - AutoTeeterTotter");
 	}
 }

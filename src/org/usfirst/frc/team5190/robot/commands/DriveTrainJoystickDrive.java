@@ -4,9 +4,9 @@ import org.usfirst.frc.team5190.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class TeleDriveWithJoystick extends Command {
+public class DriveTrainJoystickDrive extends Command {
 
-	public TeleDriveWithJoystick() {
+	public DriveTrainJoystickDrive() {
 		super("ArcadeDriveWithJoyStick");
 		requires(Robot.drivetrain);
 	}
@@ -14,9 +14,7 @@ public class TeleDriveWithJoystick extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("Entering command - ArcadeDriveWithJoyStick");
-		Robot.drivetrain.initialize();
 	}
-	
 	
 	@Override
 	protected void execute() {
@@ -30,13 +28,11 @@ public class TeleDriveWithJoystick extends Command {
 
 	@Override
 	protected void end() {
-		Robot.drivetrain.end();
 		System.out.println("Leaving command - ArcadeDriveWithJoyStick");
 	}
 	
 	@Override
 	protected void interrupted() {
-		Robot.drivetrain.end();
 		System.out.println("Cancelling command - ArcadeDriveWithJoyStick");
 	}
 }
