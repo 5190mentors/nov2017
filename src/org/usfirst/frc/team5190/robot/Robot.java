@@ -61,7 +61,7 @@ public class Robot extends IterativeRobot {
 			RobotMap.navx = new AHRS(SPI.Port.kMXP, RobotMap.kNavUpdateHz);
 
 		if (RobotMap.enableClaw)
-			RobotMap.grip = new Solenoid(41, RobotMap.spGrip);
+			RobotMap.grip = new Solenoid(RobotMap.dvPcm, RobotMap.spGrip);
 		
 		if (RobotMap.enableElevator) {
 			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);

@@ -35,4 +35,8 @@ public class Elevator extends Subsystem {
     public void down() {
     	RobotMap.elevatorMotor.set(-RobotMap.kElevSpeed);
     }
+
+    public void stop() {
+    	RobotMap.elevatorMotor.set(0);
+    }
 }

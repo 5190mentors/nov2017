@@ -8,30 +8,30 @@ import org.usfirst.frc.team5190.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ElevatorDown extends Command {
+public class ElevatorStop extends Command {
 	
-	public ElevatorDown() {
-		super("ElevatorDown");
+	public ElevatorStop() {
+		super("ElevatorStop");
 		requires(Robot.elevator);
 	}
 
 	@Override
 	protected void initialize() {
-		System.out.println("Entering command - ElevatorDown");
+		System.out.println("Entering command - ElevatorStop");
+		Robot.elevator.stop();
 	}
 
 	@Override
 	protected void execute() {
-		Robot.elevator.down();
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 	
 	@Override
 	protected void end() {
-		System.out.println("Leaving command - ElevatorDown");
+		System.out.println("Leaving command - ElevatorStop");
 	}	
 }

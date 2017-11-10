@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveTrainJoystickDrive extends Command {
 
 	public DriveTrainJoystickDrive() {
-		super("ArcadeDriveWithJoyStick");
+		super("DriveTrainJoystickDrive");
 		requires(Robot.drivetrain);
 	}
 
 	@Override
 	protected void initialize() {
-		System.out.println("Entering command - ArcadeDriveWithJoyStick");
+		System.out.println("Entering command - DriveTrainJoyStickDrive");
 	}
 	
 	@Override
@@ -28,11 +28,11 @@ public class DriveTrainJoystickDrive extends Command {
 
 	@Override
 	protected void end() {
-		System.out.println("Leaving command - ArcadeDriveWithJoyStick");
+		System.out.println("Leaving command - DriveTrainJoyStickDrive");
 	}
 	
 	@Override
 	protected void interrupted() {
-		System.out.println("Cancelling command - ArcadeDriveWithJoyStick");
+		System.out.println("Cancelling command - DriveTrainJoyStickDrive");
 	}
 }

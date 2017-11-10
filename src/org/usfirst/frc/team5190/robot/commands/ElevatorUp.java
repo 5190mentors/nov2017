@@ -11,13 +11,13 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ElevatorUp extends Command {
 	
 	public ElevatorUp() {
-		super("UpElevator");
+		super("ElevatorUp");
 		requires(Robot.elevator);
 	}
 
 	@Override
 	protected void initialize() {
-		System.out.println("Entering command - UpElevator");
+		System.out.println("Entering command - ElevatorUp");
 	}
 
 	@Override
@@ -32,6 +32,6 @@ public class ElevatorUp extends Command {
 	
 	@Override
 	protected void end() {
-		System.out.println("Leaving command - UpElevator");
+		System.out.println("Leaving command - ElevatorUp");
 	}	
 }

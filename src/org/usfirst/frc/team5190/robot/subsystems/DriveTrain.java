@@ -49,9 +49,6 @@ public class DriveTrain extends Subsystem {
 		// stop the motors
 		RobotMap.drive.arcadeDrive(0, 0);
 		
-		// reset the throttle
-		RobotMap.drive.setMaxOutput(0.5);
-
     	System.out.println("Drive Train: Reset completed");
 	}
 	
@@ -61,17 +58,11 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void drive(Joystick joy) {
-		RobotMap.drive.arcadeDrive(joy);
-	}
-
-	public void setThrottle(double throttle) {
-		if (throttle < 1 && throttle > 0)
-			RobotMap.drive.setMaxOutput(throttle);
-		else if (throttle < 0)
-			RobotMap.drive.setMaxOutput(0.1);
-		else
-			RobotMap.drive.setMaxOutput(1);
-
-    	System.out.println("Drive Train: Throttle set to " + throttle);
+//		RobotMap.drive.arcadeDrive(joy);
+		double throttle = joy.getThrottle();
+		double y = joy.getY();
+		double x = joy.getX();
+		System.out.println("Drive Train: " + y + " | " + x + " | " + throttle);
+		RobotMap.drive.arcadeDrive(y*throttle, x*throttle);
 	}
 }

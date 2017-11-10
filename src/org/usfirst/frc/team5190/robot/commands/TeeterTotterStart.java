@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class TeeterTotterStart extends Command {
 	public TeeterTotterStart() {
-		super("AutoTeeterTotter");
+		super("TeeterTotterStart");
 		requires(Robot.drivetrain);
 		requires(Robot.teeterTotter);
 	}
@@ -18,7 +18,7 @@ public class TeeterTotterStart extends Command {
 	@Override
 	protected void initialize() {
 		Robot.teeterTotter.start();
-		System.out.println("Entering command - AutoTeeterTotter");
+		System.out.println("Entering command - TeeterTotterStart");
 	}
 
 	@Override
@@ -35,12 +35,12 @@ public class TeeterTotterStart extends Command {
 	@Override
 	protected void end() {
 		Robot.teeterTotter.stop();
-		System.out.println("Leaving command - AutoTeeterTotter");
+		System.out.println("Leaving command - TeeterTotterStart");
 	}
 
 	@Override
 	protected void interrupted() {
 		Robot.teeterTotter.stop();
-		System.out.println("Cancelling command - AutoTeeterTotter");
+		System.out.println("Cancelling command - TeeterTotterStart");
 	}
 }

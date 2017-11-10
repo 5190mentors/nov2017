@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TeeterTotterStop extends Command {
 
 	public TeeterTotterStop() {
-		super("StopTeeterTotter");
+		super("TeeterTotterStop");
 		requires(Robot.drivetrain);
 		requires(Robot.teeterTotter);
 	}
 
 	@Override
 	protected void initialize() {
-		System.out.println("Entering command - StopTeeterTotter");
+		System.out.println("Entering command - TeeterTotterStop");
 		Robot.teeterTotter.stop();
 	}
 	
@@ -29,6 +29,6 @@ public class TeeterTotterStop extends Command {
 
 	@Override
 	protected void end() {
-		System.out.println("Leaving command - StopTeeterTotter");
+		System.out.println("Leaving command - TeeterTotterStop");
 	}
 }

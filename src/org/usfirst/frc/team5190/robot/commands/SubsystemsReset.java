@@ -21,7 +21,7 @@ public class SubsystemsReset extends TimedCommand {
 	protected void initialize() {
 		System.out.println("Entering command - ResetSubsystems");		
 		Robot.teeterTotter.reset();
-		//Robot.elevator.reset();
+		Robot.elevator.reset();
 		Robot.claw.reset();
 		Robot.drivetrain.reset();
 	}

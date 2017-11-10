@@ -1,11 +1,12 @@
 package org.usfirst.frc.team5190.robot;
 
-import org.usfirst.frc.team5190.robot.commands.TeeterTotterStart;
-import org.usfirst.frc.team5190.robot.commands.ElevatorDown;
 import org.usfirst.frc.team5190.robot.commands.ClawOpenOrClose;
-import org.usfirst.frc.team5190.robot.commands.SubsystemsReset;
-import org.usfirst.frc.team5190.robot.commands.TeeterTotterStop;
+import org.usfirst.frc.team5190.robot.commands.ElevatorDown;
+import org.usfirst.frc.team5190.robot.commands.ElevatorStop;
 import org.usfirst.frc.team5190.robot.commands.ElevatorUp;
+import org.usfirst.frc.team5190.robot.commands.SubsystemsReset;
+import org.usfirst.frc.team5190.robot.commands.TeeterTotterStart;
+import org.usfirst.frc.team5190.robot.commands.TeeterTotterStop;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -35,8 +36,10 @@ public class OI {
 		// Connect the buttons to commands
 		b0.whenPressed(new ClawOpenOrClose());
 		b1.whenPressed(new SubsystemsReset());
-		b2.whileHeld(new ElevatorUp());
-		b4.whileHeld(new ElevatorDown());
+		b2.whenPressed(new ElevatorUp());
+		b2.whenReleased(new ElevatorStop());
+		b4.whenPressed(new ElevatorDown());
+		b4.whenReleased(new ElevatorStop());
 		b5.whenPressed(new TeeterTotterStart());
 		b6.whenPressed(new TeeterTotterStop());
 	}
