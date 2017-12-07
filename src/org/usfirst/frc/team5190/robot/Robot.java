@@ -1,24 +1,23 @@
 package org.usfirst.frc.team5190.robot;
 
+import org.usfirst.frc.team5190.robot.commands.TeeterTotterStart;
 import org.usfirst.frc.team5190.robot.subsystems.Claw;
 import org.usfirst.frc.team5190.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5190.robot.subsystems.Elevator;
-import org.usfirst.frc.team5190.robot.subsystems.ElevatorUsingPot;
 import org.usfirst.frc.team5190.robot.subsystems.TeeterTotter;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -33,9 +32,8 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 
 	public static DriveTrain drivetrain;
-	public static TeeterTotter teeterTotter;
-	
-	public static Subsystem elevator;
+	public static TeeterTotter teeterTotter;	
+	public static Elevator elevator;
 	public static Claw claw;
 	public static OI oi;
 
@@ -45,11 +43,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		// Initialize drive train
+		
+		// Initialize all actuators and sensors
 		RobotMap.frontLeftMotor = new Jaguar(RobotMap.spFrontLeft);
 		RobotMap.rearLeftMotor = new Jaguar(RobotMap.spRearLeft);
 		RobotMap.frontRightMotor = new Jaguar(RobotMap.spFrontRight);
-		RobotMap.rearRightMotor = new Jaguar(RobotMap.spRearRight);
+		RobotMap.rearRightMotor = new Jaguar(RobotMap.spRearRight); 
+		
+		RobotMap.drive = new RobotDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor, RobotMap.rearRightMotor);
 
 		if (RobotMap.enableEncoders) {
 			RobotMap.leftEncoder = new Encoder(RobotMap.dtLeftEncPortA, RobotMap.dtLeftEncPortB);
@@ -58,36 +59,28 @@ public class Robot extends IterativeRobot {
 			RobotMap.rightEncoder.setDistancePerPulse(0.01745 * RobotMap.kRadiusInInches);
 		}
 
-		RobotMap.drive = new RobotDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor, RobotMap.rearRightMotor);
-
 		if (RobotMap.enableNavX)
 			RobotMap.navx = new AHRS(SPI.Port.kMXP, RobotMap.kNavUpdateHz);
 
 		if (RobotMap.enableClaw)
-			RobotMap.grip = new Solenoid(RobotMap.spGrip);
+			RobotMap.grip = new Solenoid(RobotMap.dvPcm, RobotMap.spGrip);
 		
 		if (RobotMap.enableElevator) {
-			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
-			
-			if (RobotMap.enableElevatorPot)
-				RobotMap.elevatorPot = new AnalogPotentiometer(RobotMap.spElevatorPot, 1.0 / 5.0);
+//			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
+			RobotMap.elevatorMotor = new CANTalon(RobotMap.spElevatorMotor);
+			((CANTalon) RobotMap.elevatorMotor).changeControlMode(TalonControlMode.PercentVbus);
+			((CANTalon) RobotMap.elevatorMotor).enableBrakeMode(true);
 		}
-		
+
+		// Initialize all subsystems
 		drivetrain = new DriveTrain();
 		teeterTotter = new TeeterTotter();
-		if (RobotMap.enableElevator) {
-			elevator = new ElevatorUsingPot();
-		}
-		else {
-			elevator = new Elevator();
-		}
-		
+		elevator = new Elevator();		
 		claw = new Claw();
-		
 		oi = new OI();
-
+		
 		// instantiate the command used for the autonomous period
-		// autonomousCommand = new Autonomous();
+		autonomousCommand = new TeeterTotterStart();
 
 		// Show what command your subsystem is running on the SmartDashboard
 		SmartDashboard.putData(drivetrain);
@@ -98,7 +91,8 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		// autonomousCommand.start(); // schedule the autonomous command (example)
+		// there is no timing in this now
+		autonomousCommand.start(); // schedule the autonomous command (example)
 	}
 
 	/**
@@ -111,11 +105,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		// autonomousCommand.cancel();
+		autonomousCommand.cancel();		
 	}
 
 	/**
@@ -124,7 +114,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-//		updateSmartDashboard();
 	}
 
 	@Override
@@ -139,9 +128,11 @@ public class Robot extends IterativeRobot {
 		LiveWindow.run();
 	}
 	
-	public void updateSmartDashboard() {
-		drivetrain.updateSmartDashboard();
-		teeterTotter.updateSmartDashboard();
-		claw.updateSmartDashboard();
+	@Override
+	public void disabledInit() {
+		teeterTotter.reset();
+		elevator.reset();
+		claw.reset();		
+		drivetrain.reset();
 	}
 }

@@ -1,15 +1,15 @@
 package org.usfirst.frc.team5190.robot.subsystems;
 
 import org.usfirst.frc.team5190.robot.RobotMap;
-import org.usfirst.frc.team5190.robot.subsystems.Elevator.Height;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorUsingPot extends PIDSubsystem {
+	public enum Height {LOW, MIDDLE, HIGH};
 	
 	protected double m_pidOut;
 	protected double m_setPoint;
@@ -21,9 +21,27 @@ public class ElevatorUsingPot extends PIDSubsystem {
 		LiveWindow.addActuator("Elevator", "Motor", (Victor) RobotMap.elevatorMotor);			
 		LiveWindow.addSensor("Elevator", "Pot", (AnalogPotentiometer) RobotMap.elevatorPot);
 		LiveWindow.addActuator("Elevator", "PID", getPIDController());
+		
+		if (RobotMap.reverseElevator) {
+			((Jaguar) RobotMap.elevatorMotor).setInverted(true);
+		}
+		
+		reset();
 	}
-
-    public void initialize(Elevator.Height setpoint)
+	
+    public void reset() {
+    	RobotMap.elevatorMotor.stopMotor();
+    	
+    	setAbsoluteTolerance(m_tolerance);
+    	setOutputRange(-RobotMap.kElevSpeed, RobotMap.kElevSpeed);
+    	
+    	if (getPIDController().isEnabled())
+    		disable();
+    	
+    	System.out.println("ElevatorPot: Reset completed");
+    }
+    
+    public void goTo(Height setpoint)
     {
     	if (setpoint == Height.LOW)
     		m_setPoint = RobotMap.kLow;
@@ -32,23 +50,23 @@ public class ElevatorUsingPot extends PIDSubsystem {
     	else
     		m_setPoint = RobotMap.kHigh;
     	
+    	if (getPIDController().isEnabled())
+    		disable();
+
     	getPIDController().setSetpoint(m_setPoint);
-    	setAbsoluteTolerance(m_tolerance);
-    	setOutputRange(-0.5, 0.5);
     	
     	// start the PID loop
     	enable();
     }
 
-    public void end()
+    public void stop()
     {
-    	// stop the PID loop
-    	disable();
+    	if (getPIDController().isEnabled())
+    		disable();
     }
 
     @Override
-	public void initDefaultCommand() 
-    {
+	public void initDefaultCommand() {
 	}
 
 	@Override
@@ -58,7 +76,10 @@ public class ElevatorUsingPot extends PIDSubsystem {
 
 	@Override
 	protected void usePIDOutput(double d) {
+		double pidIn = returnPIDInput();
 		m_pidOut = d;
+		
+		System.out.println("ElevatorPot: " + (pidIn - m_setPoint) + " | " + d);
 		RobotMap.elevatorMotor.set(d);
 	}
 
@@ -67,10 +88,4 @@ public class ElevatorUsingPot extends PIDSubsystem {
 	{
 		return (Math.abs(returnPIDInput() - m_setPoint) < m_tolerance);
 	}
-	
-    public void updateSmartDashboard() {
-    	SmartDashboard.putNumber("Elevator.DistanceDriveSetpoint", this.getSetpoint());
-    	SmartDashboard.putNumber("Elevator.PIDInput", this.returnPIDInput());
-    	SmartDashboard.putNumber("Elevator.PIDOutput", m_pidOut);
-    }
 }
