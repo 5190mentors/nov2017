@@ -2,6 +2,8 @@ package org.usfirst.frc.team5190.robot.subsystems;
 
 import org.usfirst.frc.team5190.robot.RobotMap;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -11,7 +13,8 @@ public class Elevator extends Subsystem {
 	public Elevator() {
 		super("Elevator");
 		
-		LiveWindow.addActuator("Elevator", "Motor", (Jaguar) RobotMap.elevatorMotor);
+		if (RobotMap.enableElevator)
+			LiveWindow.addActuator("Elevator", "Motor", (CANTalon) RobotMap.elevatorMotor);
 
 		if (RobotMap.reverseElevator) {
 			((Jaguar) RobotMap.elevatorMotor).setInverted(true);
@@ -21,7 +24,8 @@ public class Elevator extends Subsystem {
 	}
 	
     public void reset() {
-    	RobotMap.elevatorMotor.stopMotor();
+    	if (RobotMap.enableElevator)
+    		RobotMap.elevatorMotor.stopMotor();
     	System.out.println("Elevator: Reset completed");
     }
     
@@ -29,14 +33,17 @@ public class Elevator extends Subsystem {
     }    
 
     public void up() {
-    	RobotMap.elevatorMotor.set(RobotMap.kElevSpeed);
+    	if (RobotMap.enableElevator)
+    		RobotMap.elevatorMotor.set(RobotMap.kElevSpeed);
     }
     
     public void down() {
-    	RobotMap.elevatorMotor.set(-RobotMap.kElevSpeed);
+    	if (RobotMap.enableElevator)
+    		RobotMap.elevatorMotor.set(-RobotMap.kElevSpeed);
     }
 
     public void stop() {
-    	RobotMap.elevatorMotor.set(0);
+    	if (RobotMap.enableElevator)
+    		RobotMap.elevatorMotor.set(0);
     }
 }

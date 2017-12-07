@@ -6,6 +6,8 @@ import org.usfirst.frc.team5190.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5190.robot.subsystems.Elevator;
 import org.usfirst.frc.team5190.robot.subsystems.TeeterTotter;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -14,7 +16,6 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -47,7 +48,8 @@ public class Robot extends IterativeRobot {
 		RobotMap.frontLeftMotor = new Jaguar(RobotMap.spFrontLeft);
 		RobotMap.rearLeftMotor = new Jaguar(RobotMap.spRearLeft);
 		RobotMap.frontRightMotor = new Jaguar(RobotMap.spFrontRight);
-		RobotMap.rearRightMotor = new Jaguar(RobotMap.spRearRight);
+		RobotMap.rearRightMotor = new Jaguar(RobotMap.spRearRight); 
+		
 		RobotMap.drive = new RobotDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor, RobotMap.rearRightMotor);
 
 		if (RobotMap.enableEncoders) {
@@ -64,7 +66,10 @@ public class Robot extends IterativeRobot {
 			RobotMap.grip = new Solenoid(RobotMap.dvPcm, RobotMap.spGrip);
 		
 		if (RobotMap.enableElevator) {
-			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
+//			RobotMap.elevatorMotor = new Victor(RobotMap.spElevatorMotor);
+			RobotMap.elevatorMotor = new CANTalon(RobotMap.spElevatorMotor);
+			((CANTalon) RobotMap.elevatorMotor).changeControlMode(TalonControlMode.PercentVbus);
+			((CANTalon) RobotMap.elevatorMotor).enableBrakeMode(true);
 		}
 
 		// Initialize all subsystems

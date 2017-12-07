@@ -20,28 +20,28 @@ public class OI {
 	
 	public OI() {
 		// Create some buttons
-		JoystickButton b0 = new JoystickButton(joy, 1);
-		JoystickButton b1 = new JoystickButton(joy, 2);
-		JoystickButton b2 = new JoystickButton(joy, 3);
-//		JoystickButton b3 = new JoystickButton(joy, 4);
-		JoystickButton b4 = new JoystickButton(joy, 5);
-		JoystickButton b5 = new JoystickButton(joy, 6);
-		JoystickButton b6 = new JoystickButton(joy, 7);
-//		JoystickButton b7 = new JoystickButton(joy, 8);
-//		JoystickButton b8 = new JoystickButton(joy, 9);
-//		JoystickButton b9 = new JoystickButton(joy, 10);
-//		JoystickButton b10 = new JoystickButton(joy, 11);
-//		JoystickButton b11 = new JoystickButton(joy, 12);
+		JoystickButton b1 = new JoystickButton(joy, 1);
+		JoystickButton b2 = new JoystickButton(joy, 2);
+//		JoystickButton b3 = new JoystickButton(joy, 3);
+		JoystickButton b4 = new JoystickButton(joy, 4);
+		JoystickButton b5 = new JoystickButton(joy, 5);
+		JoystickButton b6 = new JoystickButton(joy, 6);
+		JoystickButton b7 = new JoystickButton(joy, 7);
+//		JoystickButton b8 = new JoystickButton(joy, 8);
+//		JoystickButton b9 = new JoystickButton(joy, 9);
+//		JoystickButton b10 = new JoystickButton(joy, 10);
+//		JoystickButton b11 = new JoystickButton(joy, 11);
+//		JoystickButton b12 = new JoystickButton(joy, 12);
 
 		// Connect the buttons to commands
-		b0.whenPressed(new ClawOpenOrClose());
-		b1.whenPressed(new SubsystemsReset());
-		b2.whenPressed(new ElevatorUp());
-		b2.whenReleased(new ElevatorStop());
-		b4.whenPressed(new ElevatorDown());
+		b1.whenPressed(new ClawOpenOrClose());
+		b2.whenPressed(new SubsystemsReset());
+		b4.whenPressed(new ElevatorUp());
 		b4.whenReleased(new ElevatorStop());
-		b5.whenPressed(new TeeterTotterStart());
-		b6.whenPressed(new TeeterTotterStop());
+		b5.whenPressed(new ElevatorDown());
+		b5.whenReleased(new ElevatorStop());
+		b6.whenPressed(new TeeterTotterStart());
+		b7.whenPressed(new TeeterTotterStop());
 	}
 
 	public Joystick getJoystick() {

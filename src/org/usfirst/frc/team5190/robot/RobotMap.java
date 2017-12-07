@@ -37,14 +37,14 @@ public class RobotMap {
 	public static Encoder rightEncoder;
 
 	// TEETER TOTTER
-	public static final double kPsd = 0.08; // 0.3;			// .08 X (0 - 8) = -0.64, .08 X (4 - 8) = -0.32
+	public static final double kPsd = 0.2; // 0.3;			// .08 X (0 - 8) = -0.64, .08 X (4 - 8) = -0.32
 	public static final double kIsd = 0;
 	public static final double kDsd = 0; //0.3;
 	public static final double kFsd = 0; //0.001;
-	public static final double kMinPitch = 7;				// set this to be less than the angle of inclination of teeter totter
+	public static final double kMinPitch = 5;				// set this to be less than the angle of inclination of teeter totter
 	public static final double kPbd = 0.03;					// .03 X (8 - 0) = 0.24, .03 X (4 - 0) = .12
 	public static final double kIbd = 0;
-	public static final double kDbd = 0;
+	public static final double kDbd = 0.05;
 	public static final double kFbd = 0;
 
 	// CLAW
@@ -54,8 +54,8 @@ public class RobotMap {
 	public static Solenoid grip;
 	
 	// ELEVATOR
-	public static final boolean enableElevator = false;		// turn this off if the robot does not have an elevator
-	public static final int spElevatorMotor = 4;
+	public static final boolean enableElevator = true;		// turn this off if the robot does not have an elevator
+	public static final int spElevatorMotor = 1;
 	public static final boolean reverseElevator = false;	// set this to change the direction of elevator
 	public static final double kElevSpeed = 0.5;
 	public static SpeedController elevatorMotor;

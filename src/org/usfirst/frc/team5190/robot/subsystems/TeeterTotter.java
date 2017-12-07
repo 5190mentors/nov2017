@@ -26,7 +26,7 @@ public class TeeterTotter extends PIDSubsystem {
     {
     	if (RobotMap.enableNavX) {
     		RobotMap.navx.reset();
-    		m_horizontalPitch = RobotMap.navx.getPitch();
+    		m_horizontalPitch = 0 - RobotMap.navx.getPitch();
     	}
     	else {
     		m_horizontalPitch = 0;
@@ -43,9 +43,9 @@ public class TeeterTotter extends PIDSubsystem {
        	getPIDController().setPID(RobotMap.kPsd, RobotMap.kIsd, RobotMap.kDsd, RobotMap.kFsd);
     	getPIDController().setSetpoint(m_setPoint);
     	setAbsoluteTolerance(m_tolerance);
-    	setOutputRange(-0.5, 0.5);
+    	setOutputRange(-0.3, 0.3);
     	
-    	System.out.println("Teeter Totter: Reset completed");
+    	System.out.println("Teeter Totter: Reset completed" + " | " + m_horizontalPitch + " | " + m_setPoint);
     }
     
     public void start() {
@@ -67,7 +67,7 @@ public class TeeterTotter extends PIDSubsystem {
     @Override
     protected double returnPIDInput() {
     	if (RobotMap.enableNavX)
-    		return RobotMap.navx.getPitch();
+    		return 0 - RobotMap.navx.getPitch();
     	else
     		return m_setPoint;    		
     }
@@ -78,15 +78,15 @@ public class TeeterTotter extends PIDSubsystem {
     	double pidIn = returnPIDInput();
     	
     	if (m_currentStage == Stage.STRAIGHT_DRIVE)
-    		pidOut = -output;
-    	else
     		pidOut = output;
+    	else
+    		pidOut = -output;
     	
-		System.out.println("Teeter Totter: " + m_currentStage + " | " + (pidIn - m_setPoint) +  " | " + pidOut);
+		System.out.println("Teeter Totter: " + m_currentStage + " | " + pidIn +  " | " + m_setPoint + " | " + pidOut);
     	RobotMap.drive.drive(pidOut, 0);
     	
     	if (m_currentStage == Stage.STRAIGHT_DRIVE) {
-        	if (Math.abs(pidIn - m_setPoint) < m_tolerance) {
+        	if (Math.abs(pidIn - this.m_horizontalPitch) > 5) {
     			// switch to balance drive
     			switchToBalanceDrive();
         	}
@@ -103,8 +103,8 @@ public class TeeterTotter extends PIDSubsystem {
     private void switchToBalanceDrive()
     {
     	m_currentStage = Stage.BALANCE_DRIVE;
-    	m_setPoint = m_horizontalPitch;
-    	m_tolerance = 0.1;
+    	m_setPoint = m_horizontalPitch + 0.5;
+    	m_tolerance = 0.8;
     	
 		// reset the PID loop
     	getPIDController().reset();
@@ -112,7 +112,7 @@ public class TeeterTotter extends PIDSubsystem {
     	getPIDController().setPID(RobotMap.kPbd, RobotMap.kIbd, RobotMap.kDbd, RobotMap.kFbd);
     	getPIDController().setSetpoint(m_setPoint);
     	setAbsoluteTolerance(m_tolerance);
-    	setOutputRange(-0.03 * RobotMap.kMinPitch, 0.03 * RobotMap.kMinPitch);
+    	setOutputRange(-0.04 * RobotMap.kMinPitch, 0.04 * RobotMap.kMinPitch);
     	
     	// restart the PID loop
     	System.out.println("Teeter Totter: Switched to balance drive");

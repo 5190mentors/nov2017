@@ -59,10 +59,11 @@ public class DriveTrain extends Subsystem {
 
 	public void drive(Joystick joy) {
 //		RobotMap.drive.arcadeDrive(joy);
-		double throttle = joy.getThrottle();
+		double throttle = joy.getRawAxis(2);
 		double y = joy.getY();
 		double x = joy.getX();
-		System.out.println("Drive Train: " + y + " | " + x + " | " + throttle);
+//		System.out.println("Drive Train: " + y + " | " + x + " | " + throttle);
 		RobotMap.drive.arcadeDrive(y*throttle, x*throttle);
+//		RobotMap.drive.arcadeDrive(y, x);
 	}
 }
