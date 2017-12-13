@@ -22,9 +22,9 @@ public class OI {
 		// Create some buttons
 		JoystickButton b1 = new JoystickButton(joy, 1);
 		JoystickButton b2 = new JoystickButton(joy, 2);
-//		JoystickButton b3 = new JoystickButton(joy, 3);
+		JoystickButton b3 = new JoystickButton(joy, 3);
 		JoystickButton b4 = new JoystickButton(joy, 4);
-		JoystickButton b5 = new JoystickButton(joy, 5);
+//		JoystickButton b5 = new JoystickButton(joy, 5);
 		JoystickButton b6 = new JoystickButton(joy, 6);
 		JoystickButton b7 = new JoystickButton(joy, 7);
 //		JoystickButton b8 = new JoystickButton(joy, 8);
@@ -35,11 +35,11 @@ public class OI {
 
 		// Connect the buttons to commands
 		b1.whenPressed(new ClawOpenOrClose());
-		b2.whenPressed(new SubsystemsReset());
-		b4.whenPressed(new ElevatorUp());
-		b4.whenReleased(new ElevatorStop());
-		b5.whenPressed(new ElevatorDown());
-		b5.whenReleased(new ElevatorStop());
+		b4.whenPressed(new SubsystemsReset());
+		b2.whenPressed(new ElevatorUp());
+		b2.whenReleased(new ElevatorStop());
+		b3.whenPressed(new ElevatorDown());
+		b3.whenReleased(new ElevatorStop());
 		b6.whenPressed(new TeeterTotterStart());
 		b7.whenPressed(new TeeterTotterStop());
 	}

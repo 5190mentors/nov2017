@@ -44,7 +44,7 @@ public class RobotMap {
 	public static final double kMinPitch = 5;				// set this to be less than the angle of inclination of teeter totter
 	public static final double kPbd = 0.03;					// .03 X (8 - 0) = 0.24, .03 X (4 - 0) = .12
 	public static final double kIbd = 0;
-	public static final double kDbd = 0.05;
+	public static final double kDbd = 0.1;
 	public static final double kFbd = 0;
 
 	// CLAW
