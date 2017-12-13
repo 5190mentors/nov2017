@@ -86,7 +86,7 @@ public class TeeterTotter extends PIDSubsystem {
     	RobotMap.drive.drive(pidOut, 0);
     	
     	if (m_currentStage == Stage.STRAIGHT_DRIVE) {
-        	if (Math.abs(pidIn - this.m_horizontalPitch) > 5) {
+        	if (Math.abs(pidIn - this.m_horizontalPitch) > 4) {
     			// switch to balance drive
     			switchToBalanceDrive();
         	}
@@ -103,7 +103,7 @@ public class TeeterTotter extends PIDSubsystem {
     private void switchToBalanceDrive()
     {
     	m_currentStage = Stage.BALANCE_DRIVE;
-    	m_setPoint = m_horizontalPitch + 0.5;
+    	m_setPoint = m_horizontalPitch;
     	m_tolerance = 0.8;
     	
 		// reset the PID loop
